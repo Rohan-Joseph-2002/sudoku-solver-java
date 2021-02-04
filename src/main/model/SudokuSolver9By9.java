@@ -2,8 +2,8 @@ package model;
 
 public class SudokuSolver9By9 implements SolveBoard {
 
-    public static final int UNASSIGNED = 0;
-    public static final int BOARD_SIZE = 9;  //This field ensures single point of control
+    public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with 0s
+    public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
 
     private int[][] sudokuBoard;
 
@@ -11,13 +11,15 @@ public class SudokuSolver9By9 implements SolveBoard {
     public SudokuSolver9By9(int[][] sudokuBoard) {
         this.sudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
 
-        for (int row = 0; row < BOARD_SIZE; row++) {                     //rows
-            for (int column = 1; column <= BOARD_SIZE; column++) {        //columns
+        //NOTE: 0 indexing is used in the arrays in this implementation
+        for (int row = 0; row < BOARD_SIZE; row++) {                      //rows
+            for (int column = 0; column < BOARD_SIZE; column++) {         //columns
                 this.sudokuBoard[row][column] = sudokuBoard[row][column]; //constructs matrix (i.e. sudoku board)
             }
         }
     }
 
+    //TODO: Complete implementation for this method
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same row, else returns false
     @Override
@@ -25,6 +27,7 @@ public class SudokuSolver9By9 implements SolveBoard {
         return false;   //stub
     }
 
+    //TODO: Complete implementation for this method
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same column, else returns false
     @Override
@@ -32,6 +35,7 @@ public class SudokuSolver9By9 implements SolveBoard {
         return false;   //stub
     }
 
+    //TODO: Complete implementation for this method
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same subgrid, else returns false
     @Override
@@ -39,6 +43,7 @@ public class SudokuSolver9By9 implements SolveBoard {
         return false;   //stub
     }
 
+    //TODO: Complete implementation for this method
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false
     @Override
@@ -46,6 +51,7 @@ public class SudokuSolver9By9 implements SolveBoard {
         return false;   //stub
     }
 
+    //TODO: Complete implementation for this method
     //MODIFIES: this
     //EFFECTS: Returns true is a valid solution is found, else returns false.
     @Override

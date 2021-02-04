@@ -17,7 +17,8 @@ as well as outputting the solved board for the user.
 Personally, this project is off interest to me because I have been solving sudoku
 for many years now, and I wanted to incorporate my own person interest in
 sudoku into coding, and this term project serves as an effective method for me
-to do just that.
+to do just that. In addition, my application is also inspired by the sudoku 
+solver that I saw in CPSC 110.
 
 ## User Stories
 
