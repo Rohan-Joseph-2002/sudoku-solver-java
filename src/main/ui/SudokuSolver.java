@@ -56,6 +56,7 @@ public class SudokuSolver {
             displaySolvedBoard(answerSudokuBoard);
         } else {
             System.out.print("\n Unfortunately, a solution doesn't exist :( \n");
+            System.out.print("Please try another question sudoku.");
         }
 
     }
