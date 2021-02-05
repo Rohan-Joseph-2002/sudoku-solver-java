@@ -7,10 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuSolver9by9Tests {
 
-    private static final int BOARD_SIZE = 9;
-
     private SudokuSolver9By9 testBoard1;
-    private int[][] board1 = {
+
+    private final int[][] board1 = {
             {0,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
@@ -27,7 +26,7 @@ public class SudokuSolver9by9Tests {
     private int testSubGridColumnBoard1;
 
     private SudokuSolver9By9 testBoard2;
-    private int[][] board2 = {
+    private final int[][] board2 = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,0,8},
             {1,9,8,3,4,2,5,6,7},
@@ -44,7 +43,7 @@ public class SudokuSolver9by9Tests {
     private int testSubGridColumnBoard2;
 
     private SudokuSolver9By9 testBoardNotSolvable;
-    private int[][] board3 = {
+    private final int[][] board3 = {
             {2,3,0,0,7,0,0,0,0},
             {6,0,0,1,9,5,0,0,0},
             {0,9,8,0,0,0,0,6,0},
@@ -57,7 +56,7 @@ public class SudokuSolver9by9Tests {
     };
 
     private SudokuSolver9By9 testBoardSolvable;
-    private int[][] board4 = {
+    private final int[][] board4 = {
             {5,3,0,0,7,0,0,0,0},
             {6,0,0,1,9,5,0,0,0},
             {0,9,8,0,0,0,0,6,0},
@@ -69,7 +68,7 @@ public class SudokuSolver9by9Tests {
             {0,0,0,0,8,0,0,7,9}
     };
 
-    private SudokuSolver9By9 solutionBoard;
+    private SudokuSolver9By9 testSolutionBoard;
     private int[][] solution = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
@@ -100,7 +99,7 @@ public class SudokuSolver9by9Tests {
 
         testBoardSolvable = new SudokuSolver9By9(board4);
 
-        solutionBoard = new SudokuSolver9By9(solution);
+        testSolutionBoard = new SudokuSolver9By9(solution);
 
     }
 

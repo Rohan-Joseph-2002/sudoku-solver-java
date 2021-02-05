@@ -6,6 +6,7 @@ public class SudokuSolver9By9 implements SolveBoard {
     public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
 
     private int[][] sudokuBoard;
+    private int[][] solvedBoard;
 
     //Constructor
     public SudokuSolver9By9(int[][] sudokuBoard) {
@@ -18,6 +19,53 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
 
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
+    @Override
+    public boolean solveBoard(int[][] sudokuBoard) {
+        //NOTE: Iterating through rows
+        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+            //NOTE: Iterating through columns
+            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
+                //NOTE: Checks to find an UNASSIGNED number position
+                if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
+                    //NOTE: Tries every possible number to check if it can be assigned here
+                    return getAssignment(sudokuBoard, rowIndex, columnIndex);
+                }
+            }
+        }
+        this.solvedBoard = sudokuBoard;
+        return true;   //NOTE: Sudoku is solved
+
+    }
+
+    //REQUIRES: rowIndex and columnIndex must be one of [0, 8]
+    //MODIFIES: this
+    //EFFECTS: Checks to see if the number can be assigned, assigns if true, or does nothing.
+    @Override
+    public boolean getAssignment(int[][] sudokuBoard, int rowIndex, int columnIndex) {
+        for (int num = 1; num <= BOARD_SIZE; num++) {
+            if (canAddNum(sudokuBoard, rowIndex, columnIndex, num)) {
+                //NOTE: If number can be assigned, assign number to position
+                sudokuBoard[rowIndex][columnIndex] = num;
+                //NOTE: Recursive Backtracking
+                if (solveBoard(sudokuBoard)) {
+                    return true;
+                    //NOTE: If there is no solution, keep the position UNASSIGNED and move on.
+                } else {
+                    sudokuBoard[rowIndex][columnIndex] = UNASSIGNED;
+                }
+            }
+        }
+        return false;
+    }
+
+    //EFFECTS: Gets solved sudoku board
+    @Override
+    public int[][] getSolvedBoard() {
+        return this.solvedBoard;
     }
 
     //REQUIRES: Given number must be in between [1, 9]
@@ -73,38 +121,6 @@ public class SudokuSolver9By9 implements SolveBoard {
         int n = num;
 
         return !inSameRow(board, r, n) && !inSameColumn(board, c, n) && !inSameSubGrid(board, subR, subC, n);
-
-    }
-
-    //MODIFIES: this
-    //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
-    @Override
-    public boolean solveBoard(int[][] sudokuBoard) {
-        //NOTE: Iterating through rows
-        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-            //NOTE: Iterating through columns
-            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                //NOTE: Check to find an UNASSIGNED number position
-                if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
-                    //NOTE: Try every possible number to check if it can be assigned here
-                    for (int num = 1; num <= BOARD_SIZE; num++) {
-                        if (canAddNum(sudokuBoard, rowIndex, columnIndex, num)) {
-                            //NOTE: If number can be assigned, assign number to position
-                            sudokuBoard[rowIndex][columnIndex] = num;
-                            //NOTE: Recursive Backtracking
-                            if (solveBoard(sudokuBoard)) {
-                                return true;
-                                //NOTE: If there is no solution, keep the position UNASSIGNED and move on.
-                            } else {
-                                sudokuBoard[rowIndex][columnIndex] = UNASSIGNED;
-                            }
-                        }
-                    }
-                    return false; //NOTE: Return false is number is assigned to a position
-                }
-            }
-        }
-        return true;   //NOTE: Sudoku is solved
 
     }
 
