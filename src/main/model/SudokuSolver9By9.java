@@ -69,6 +69,21 @@ public class SudokuSolver9By9 implements SolveBoard {
     }
 
     //REQUIRES: Given number must be in between [1, 9]
+    //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false
+    @Override
+    public boolean canAddNum(int[][] sudokuBoard, int rowIndex, int columnIndex, int num) {
+        int[][] board = sudokuBoard;
+        int r = rowIndex;
+        int subR = r - r % 3;   //NOTE: constrains iterating rows within a 3 by 3 subgrid
+        int c = columnIndex;
+        int subC = c - c % 3;   //NOTE: constrains iterating columns within a 3 by 3 subgrid
+        int n = num;
+
+        return !inSameRow(board, r, n) && !inSameColumn(board, c, n) && !inSameSubGrid(board, subR, subC, n);
+
+    }
+
+    //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same row, else returns false
     @Override
     public boolean inSameRow(int[][] sudokuBoard, int rowIndex, int num) {
@@ -106,21 +121,6 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
         return false;
-
-    }
-
-    //REQUIRES: Given number must be in between [1, 9]
-    //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false
-    @Override
-    public boolean canAddNum(int[][] sudokuBoard, int rowIndex, int columnIndex, int num) {
-        int[][] board = sudokuBoard;
-        int r = rowIndex;
-        int subR = r - r % 3;   //NOTE: constrains iterating rows within a 3 by 3 subgrid
-        int c = columnIndex;
-        int subC = c - c % 3;   //NOTE: constrains iterating columns within a 3 by 3 subgrid
-        int n = num;
-
-        return !inSameRow(board, r, n) && !inSameColumn(board, c, n) && !inSameSubGrid(board, subR, subC, n);
 
     }
 
