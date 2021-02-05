@@ -73,25 +73,6 @@ public class SudokuSolver {
 
     }
 
-    //EFFECTS: Displays a given matrix in a 9 by 9 board
-    private void getBoardDisplay(int[][] board) {
-        for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
-            for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
-                System.out.print(" " + board[row][column]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    //REQUIRES: Number in [1, 9]
-    //EFFECTS: Prints out prompt message depending on the sudoku row
-    private void promptMessage(int num) {
-        System.out.print("Please enter the numbers in the " + getRowNum(num) + " row of a 9 x 9 sudoku board: \n");
-        System.out.print("Please represent empty spaces/unassigned numbers with a 0! \n");
-        System.out.print("Press enter after each entry! \n");
-    }
-
     //REQUIRES: Number in [1, 9]
     //MODIFIES: this
     //EFFECTS: Gets user input for every row of a sudoku board
@@ -191,6 +172,25 @@ public class SudokuSolver {
         promptMessage(9);
         return getRowInts(row9);
 
+    }
+
+    //EFFECTS: Displays a given matrix in a 9 by 9 board
+    private void getBoardDisplay(int[][] board) {
+        for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
+            for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
+                System.out.print(" " + board[row][column]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    //REQUIRES: Number in [1, 9]
+    //EFFECTS: Prints out prompt message depending on the sudoku row
+    private void promptMessage(int num) {
+        System.out.print("Please enter the numbers in the " + getRowNum(num) + " row of a 9 x 9 sudoku board: \n");
+        System.out.print("Please represent empty spaces/unassigned numbers with a 0! \n");
+        System.out.print("Press enter after each entry! \n");
     }
 
     //REQUIRES: Number in [1, 9]
