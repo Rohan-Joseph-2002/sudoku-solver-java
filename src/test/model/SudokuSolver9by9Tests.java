@@ -68,7 +68,6 @@ public class SudokuSolver9by9Tests {
             {0,0,0,0,8,0,0,7,9}
     };
 
-    private SudokuSolver9By9 testSolutionBoard;
     private int[][] solution = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
@@ -98,8 +97,6 @@ public class SudokuSolver9by9Tests {
         testBoardNotSolvable = new SudokuSolver9By9(board3);
 
         testBoardSolvable = new SudokuSolver9By9(board4);
-
-        testSolutionBoard = new SudokuSolver9By9(solution);
 
     }
 
@@ -168,6 +165,16 @@ public class SudokuSolver9by9Tests {
     @Test
     public void testSolveBoardSolvable() {
         assertTrue(testBoardSolvable.solveBoard(board4));
+
+    }
+
+    @Test
+    public void testGetSolvedBoard() {
+        int[][] answerBoard = new int[9][9];
+        testBoardSolvable.solveBoard(board4);
+        answerBoard = testBoardSolvable.getSolvedBoard();
+
+        assertEquals(solution, answerBoard);
 
     }
 

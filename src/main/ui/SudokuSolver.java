@@ -55,8 +55,8 @@ public class SudokuSolver {
             answerSudokuBoard = solve9By9.getSolvedBoard();
             displaySolvedBoard(answerSudokuBoard);
         } else {
-            System.out.print("\n Unfortunately, a solution doesn't exist :( \n");
-            System.out.print("Please try another question sudoku.");
+            System.out.print("Unfortunately, a solution doesn't exist :( \n");
+            System.out.print("Please try another question sudoku. \n");
         }
 
     }
