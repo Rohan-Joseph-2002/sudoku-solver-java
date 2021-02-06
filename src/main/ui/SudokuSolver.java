@@ -10,18 +10,6 @@ public class SudokuSolver {
     private static final String UNASSIGNED_REPRESENTATION = "-";
 
     private Scanner scanner;
-    private int[][] questionSudokuBoard;
-    private int[][] answerSudokuBoard;
-
-    private int[] row1;
-    private int[] row2;
-    private int[] row3;
-    private int[] row4;
-    private int[] row5;
-    private int[] row6;
-    private int[] row7;
-    private int[] row8;
-    private int[] row9;
 
     //Constructor
     public SudokuSolver() {
@@ -33,7 +21,7 @@ public class SudokuSolver {
     //EFFECTS:
     public void runSudokuSolver() {
         scanner = new Scanner(System.in);
-        questionSudokuBoard = new int[9][9];
+        int[][] questionSudokuBoard = new int[9][9];
 
         questionSudokuBoard[0] = getRowOne();
         questionSudokuBoard[1] = getRowTwo();
@@ -53,7 +41,7 @@ public class SudokuSolver {
 
         if (solve9By9.solveBoard(questionSudokuBoard)) {
             System.out.print("\n Here is the solution: \n");
-            answerSudokuBoard = solve9By9.getSolvedBoard();
+            int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
             displaySolvedBoard(answerSudokuBoard);
             System.out.print("\n Thank you for using my sudoku solver! \n");
         } else {
@@ -114,10 +102,10 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the first row of a sudoku board
     private int[] getRowOne() {
-        row1 = new int[BOARD_SIZE_9BY9];
+        int[] row1 = new int[BOARD_SIZE_9BY9];
         promptMessage(1);
 
-        return getRowInts(row1);
+        return getRowInt(row1);
 
     }
 
@@ -125,9 +113,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the second row of a sudoku board
     private int[] getRowTwo() {
-        row2 = new int[BOARD_SIZE_9BY9];
+        int[] row2 = new int[BOARD_SIZE_9BY9];
         promptMessage(2);
-        return getRowInts(row2);
+        return getRowInt(row2);
 
     }
 
@@ -135,9 +123,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the third row of a sudoku board
     private int[] getRowThree() {
-        row3 = new int[BOARD_SIZE_9BY9];
+        int[] row3 = new int[BOARD_SIZE_9BY9];
         promptMessage(3);
-        return getRowInts(row3);
+        return getRowInt(row3);
 
     }
 
@@ -145,9 +133,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the fourth row of a sudoku board
     private int[] getRowFour() {
-        row4 = new int[BOARD_SIZE_9BY9];
+        int[] row4 = new int[BOARD_SIZE_9BY9];
         promptMessage(4);
-        return getRowInts(row4);
+        return getRowInt(row4);
 
     }
 
@@ -155,9 +143,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the fifth row of a sudoku board
     private int[] getRowFive() {
-        row5 = new int[BOARD_SIZE_9BY9];
+        int[] row5 = new int[BOARD_SIZE_9BY9];
         promptMessage(5);
-        return getRowInts(row5);
+        return getRowInt(row5);
 
     }
 
@@ -165,9 +153,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the sixth row of a sudoku board
     private int[] getRowSix() {
-        row6 = new int[BOARD_SIZE_9BY9];
+        int[] row6 = new int[BOARD_SIZE_9BY9];
         promptMessage(6);
-        return getRowInts(row6);
+        return getRowInt(row6);
 
     }
 
@@ -175,9 +163,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the seventh row of a sudoku board
     private int[] getRowSeven() {
-        row7 = new int[BOARD_SIZE_9BY9];
+        int[] row7 = new int[BOARD_SIZE_9BY9];
         promptMessage(7);
-        return getRowInts(row7);
+        return getRowInt(row7);
 
     }
 
@@ -185,9 +173,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the eighth row of a sudoku board
     private int[] getRowEight() {
-        row8 = new int[BOARD_SIZE_9BY9];
+        int[] row8 = new int[BOARD_SIZE_9BY9];
         promptMessage(8);
-        return getRowInts(row8);
+        return getRowInt(row8);
 
     }
 
@@ -195,9 +183,9 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Gets user input for the ninth row of a sudoku board
     private int[] getRowNine() {
-        row9 = new int[BOARD_SIZE_9BY9];
+        int[] row9 = new int[BOARD_SIZE_9BY9];
         promptMessage(9);
-        return getRowInts(row9);
+        return getRowInt(row9);
 
     }
 
@@ -238,7 +226,7 @@ public class SudokuSolver {
     //REQUIRES: Number in [1, 9]
     //MODIFIES: this
     //EFFECTS: Gets user input for every row of a sudoku board
-    private int[] getRowInts(int[] row) {
+    private int[] getRowInt(int[] row) {
         for (int i = 0; i < BOARD_SIZE_9BY9; i++) {
             row[i] = scanner.nextInt();
         }

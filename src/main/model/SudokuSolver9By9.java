@@ -5,7 +5,7 @@ public class SudokuSolver9By9 implements SolveBoard {
     public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with 0s
     public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
 
-    private int[][] sudokuBoard;
+    private final int[][] sudokuBoard;
     private int[][] solvedBoard;
 
     //Constructor
@@ -13,10 +13,10 @@ public class SudokuSolver9By9 implements SolveBoard {
         this.sudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
 
         //NOTE: 0 indexing is used in the arrays in this implementation
-        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {                              //rows
-            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {                 //columns
-                this.sudokuBoard[rowIndex][columnIndex] = sudokuBoard[rowIndex][columnIndex];
-            }
+        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+            System.arraycopy(sudokuBoard[rowIndex],
+                    0, this.sudokuBoard[rowIndex],
+                    0, BOARD_SIZE);
         }
 
     }
@@ -72,14 +72,12 @@ public class SudokuSolver9By9 implements SolveBoard {
     //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false
     @Override
     public boolean canAddNum(int[][] sudokuBoard, int rowIndex, int columnIndex, int num) {
-        int[][] board = sudokuBoard;
-        int r = rowIndex;
-        int subR = r - r % 3;   //NOTE: constrains iterating rows within a 3 by 3 subgrid
-        int c = columnIndex;
-        int subC = c - c % 3;   //NOTE: constrains iterating columns within a 3 by 3 subgrid
-        int n = num;
+        int subRow = rowIndex - rowIndex % 3;          //NOTE: constrains iterating rows within a 3 by 3 subgrid
+        int subColumn = columnIndex - columnIndex % 3; //NOTE: constrains iterating columns within a 3 by 3 subgrid
 
-        return !inSameRow(board, r, n) && !inSameColumn(board, c, n) && !inSameSubGrid(board, subR, subC, n);
+        return !inSameRow(sudokuBoard, rowIndex, num)
+                && !inSameColumn(sudokuBoard, columnIndex, num)
+                && !inSameSubGrid(sudokuBoard, subRow, subColumn, num);
 
     }
 

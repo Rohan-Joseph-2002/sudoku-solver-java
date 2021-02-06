@@ -68,7 +68,7 @@ public class SudokuSolver9by9Tests {
             {0,0,0,0,8,0,0,7,9}
     };
 
-    private int[][] solution = {
+    private final int[][] solution = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
@@ -170,7 +170,7 @@ public class SudokuSolver9by9Tests {
 
     @Test
     public void testGetSolvedBoard() {
-        int[][] answerBoard = new int[9][9];
+        int[][] answerBoard;
         testBoardSolvable.solveBoard(board4);
         answerBoard = testBoardSolvable.getSolvedBoard();
 
