@@ -30,3 +30,5 @@ board.
 4. As a user, I want to be able to see the result of solving a given sudoku
 question board (i.e. the solved sudoku board) if the inputted sudoku board is
 solvable.
+5. As a user, I want to be able to have the option to try another sudoku board to solve,
+without having to re-run the console application.

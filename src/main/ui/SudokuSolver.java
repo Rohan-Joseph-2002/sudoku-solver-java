@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class SudokuSolver {
 
     private static final int BOARD_SIZE_9BY9 = 9;
+    private static final String UNASSIGNED_REPRESENTATION = "-";
 
     private Scanner scanner;
     private int[][] questionSudokuBoard;
@@ -86,7 +87,7 @@ public class SudokuSolver {
                     getColumnDivider();
                 }
                 if (board[rowIndex][columnIndex] == 0) {
-                    System.out.print(" 0 ");
+                    System.out.print(" " + UNASSIGNED_REPRESENTATION + " ");
                 } else {
                     System.out.print(" " + board[rowIndex][columnIndex] + " ");
                 }
