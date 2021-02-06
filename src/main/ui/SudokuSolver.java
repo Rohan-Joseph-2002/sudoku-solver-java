@@ -54,6 +54,7 @@ public class SudokuSolver {
             System.out.print("\n Here is the solution: \n");
             answerSudokuBoard = solve9By9.getSolvedBoard();
             displaySolvedBoard(answerSudokuBoard);
+            System.out.print("\n Thank you for using my sudoku solver! \n");
         } else {
             System.out.print("Unfortunately, a solution doesn't exist :( \n");
             System.out.print("Please try another question sudoku. \n");
@@ -73,14 +74,39 @@ public class SudokuSolver {
 
     }
 
-    //REQUIRES: Number in [1, 9]
-    //MODIFIES: this
-    //EFFECTS: Gets user input for every row of a sudoku board
-    private int[] getRowInts(int[] row) {
-        for (int i = 0; i < BOARD_SIZE_9BY9; i++) {
-            row[i] = scanner.nextInt();
+    //EFFECTS: Displays a given matrix in a 9 by 9 board
+    public void getBoardDisplay(int[][] board) {
+        getRowDivider();
+        for (int rowIndex = 0; rowIndex < BOARD_SIZE_9BY9; rowIndex++) {
+            if (rowIndex % 3 == 0 && rowIndex != 0) {
+                getRowDivider();
+            }
+            for (int columnIndex = 0; columnIndex < BOARD_SIZE_9BY9; columnIndex++) {
+                if (columnIndex % 3 == 0) {
+                    getColumnDivider();
+                }
+                if (board[rowIndex][columnIndex] == 0) {
+                    System.out.print(" 0 ");
+                } else {
+                    System.out.print(" " + board[rowIndex][columnIndex] + " ");
+                }
+            }
+            getColumnDivider();
+            System.out.println();
         }
-        return row;
+        getRowDivider();
+    }
+
+    //EFFECTS: Displays row divider => Allows the design of the divider to be changed
+    private void getRowDivider() {
+        System.out.println("...............................");
+
+    }
+
+    //EFFECTS: Displays column divider => Allows the design of the divider to be changed
+    private void getColumnDivider() {
+        System.out.print("|");
+
     }
 
     //REQUIRES: Number in [1, 9]
@@ -174,17 +200,6 @@ public class SudokuSolver {
 
     }
 
-    //EFFECTS: Displays a given matrix in a 9 by 9 board
-    private void getBoardDisplay(int[][] board) {
-        for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
-            for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
-                System.out.print(" " + board[row][column]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     //REQUIRES: Number in [1, 9]
     //EFFECTS: Prints out prompt message depending on the sudoku row
     private void promptMessage(int num) {
@@ -192,6 +207,7 @@ public class SudokuSolver {
         System.out.print("Please represent empty spaces/unassigned numbers with a 0! \n");
         System.out.print("Press enter after each entry! \n");
     }
+
 
     //REQUIRES: Number in [1, 9]
     //EFFECTS: return corresponding string to given row number.
@@ -216,6 +232,16 @@ public class SudokuSolver {
             return "ninth";
         }
         return null;
+    }
+
+    //REQUIRES: Number in [1, 9]
+    //MODIFIES: this
+    //EFFECTS: Gets user input for every row of a sudoku board
+    private int[] getRowInts(int[] row) {
+        for (int i = 0; i < BOARD_SIZE_9BY9; i++) {
+            row[i] = scanner.nextInt();
+        }
+        return row;
     }
 
 }
