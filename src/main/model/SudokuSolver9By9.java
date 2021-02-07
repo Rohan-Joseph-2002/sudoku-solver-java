@@ -25,9 +25,7 @@ public class SudokuSolver9By9 implements SolveBoard {
     //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
     @Override
     public boolean solveBoard(int[][] sudokuBoard) {
-        //NOTE: Iterating through rows
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-            //NOTE: Iterating through columns
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                 //NOTE: Checks to find an UNASSIGNED number position
                 if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
