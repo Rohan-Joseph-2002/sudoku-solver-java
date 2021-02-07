@@ -2,7 +2,7 @@ package model;
 
 public class SudokuSolver9By9 implements SolveBoard {
 
-    public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with 0s
+    public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with a 0
     public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
 
     private final int[][] sudokuBoard;
