@@ -18,7 +18,7 @@ public class SudokuSolver {
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: Runs the sudoku solver (i.e., takes input, runs it through the solver, and displays the solution)
     public void runSudokuSolver() {
         scanner = new Scanner(System.in);
         int[][] questionSudokuBoard = new int[9][9];
@@ -104,7 +104,6 @@ public class SudokuSolver {
     private int[] getRowOne() {
         int[] row1 = new int[BOARD_SIZE_9BY9];
         promptMessage(1);
-
         return getRowInt(row1);
 
     }
@@ -195,6 +194,7 @@ public class SudokuSolver {
         System.out.print("Please enter the numbers in the " + getRowNum(num) + " row of a 9 x 9 sudoku board: \n");
         System.out.print("Please represent empty spaces/unassigned numbers with a 0! \n");
         System.out.print("Press enter after each entry! \n");
+
     }
 
 
