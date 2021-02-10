@@ -14,8 +14,6 @@ public class SudokuSolver {
     private Scanner scanner;
     private boolean shouldRun = true;
 
-    private SudokuAnswerBoards listOfAnswerBoards;
-
     //EFFECTS: Runs the Sudoku Solver
     public SudokuSolver() {
         runSudokuSolver();
@@ -70,7 +68,7 @@ public class SudokuSolver {
         int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
         displaySolvedBoard(answerSudokuBoard);
         SudokuAnswerBoard answerBoard = new SudokuAnswerBoard(answerSudokuBoard);
-        listOfAnswerBoards = new SudokuAnswerBoards();
+        SudokuAnswerBoards listOfAnswerBoards = new SudokuAnswerBoards();
         listOfAnswerBoards.add(answerBoard);
     }
 
