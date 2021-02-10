@@ -1,5 +1,7 @@
 package ui;
 
+import model.SudokuAnswerBoard;
+import model.SudokuAnswerBoards;
 import model.SudokuSolver9By9;
 
 import java.util.Scanner;
@@ -10,19 +12,47 @@ public class SudokuSolver {
     private static final String UNASSIGNED_REPRESENTATION = "-";
 
     private Scanner scanner;
+    private boolean shouldRun = true;
 
-    //Constructor
+    private SudokuAnswerBoards listOfAnswerBoards;
+
+    //EFFECTS: Runs the Sudoku Solver
     public SudokuSolver() {
         runSudokuSolver();
-
     }
 
     //MODIFIES: this
     //EFFECTS: Runs the sudoku solver (i.e., takes input, runs it through the solver, and displays the solution)
     public void runSudokuSolver() {
         scanner = new Scanner(System.in);
-        int[][] questionSudokuBoard = new int[9][9];
 
+        while (shouldRun) {
+            int[][] questionSudokuBoard = new int[9][9];
+
+            getQuestionSudokuBoard(questionSudokuBoard);
+
+            SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+
+            System.out.print("\n Here is your question board: \n");
+
+            displayQuestionBoard(questionSudokuBoard);
+
+            if (solve9By9.solveBoard(questionSudokuBoard)) {
+                getSolvedSudokuBoard(solve9By9);
+            } else {
+                System.out.print("\n Unfortunately, a solution doesn't exist :( \n");
+            }
+            scanner.nextLine();
+            System.out.print("\n Do you want to try another board? (Yes/No) \n");
+            if (scanner.nextLine().equalsIgnoreCase("No")) {
+                shouldRun = false;
+                System.out.print("\n Thank you for using my sudoku solver! \n");
+            }
+        }
+    }
+
+    //EFFECTS: Gets question board from user input
+    private void getQuestionSudokuBoard(int[][] questionSudokuBoard) {
         questionSudokuBoard[0] = getRowOne();
         questionSudokuBoard[1] = getRowTwo();
         questionSudokuBoard[2] = getRowThree();
@@ -32,35 +62,26 @@ public class SudokuSolver {
         questionSudokuBoard[6] = getRowSeven();
         questionSudokuBoard[7] = getRowEight();
         questionSudokuBoard[8] = getRowNine();
+    }
 
-        SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
-
-        System.out.print("\n Here is your question board: \n");
-
-        displayQuestionBoard(questionSudokuBoard);
-
-        if (solve9By9.solveBoard(questionSudokuBoard)) {
-            System.out.print("\n Here is the solution: \n");
-            int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
-            displaySolvedBoard(answerSudokuBoard);
-            System.out.print("\n Thank you for using my sudoku solver! \n");
-        } else {
-            System.out.print("Unfortunately, a solution doesn't exist :( \n");
-            System.out.print("Please try another question sudoku. \n");
-        }
-
+    //EFFECTS: Gets and displays solved sudoku board
+    private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
+        System.out.print("\n Here is the solution: \n");
+        int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
+        displaySolvedBoard(answerSudokuBoard);
+        SudokuAnswerBoard answerBoard = new SudokuAnswerBoard(answerSudokuBoard);
+        listOfAnswerBoards = new SudokuAnswerBoards();
+        listOfAnswerBoards.add(answerBoard);
     }
 
     //EFFECTS: Displays question sudoku board.
     private void displayQuestionBoard(int[][] questionBoard) {
         getBoardDisplay(questionBoard);
-
     }
 
     //EFFECTS: Displays solved sudoku board.
     private void displaySolvedBoard(int[][] answerBoard) {
         getBoardDisplay(answerBoard);
-
     }
 
     //EFFECTS: Displays a given matrix in a 9 by 9 board
@@ -89,13 +110,11 @@ public class SudokuSolver {
     //EFFECTS: Displays row divider => Allows the design of the divider to be changed
     private void getRowDivider() {
         System.out.println("...............................");
-
     }
 
     //EFFECTS: Displays column divider => Allows the design of the divider to be changed
     private void getColumnDivider() {
         System.out.print("|");
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -105,7 +124,6 @@ public class SudokuSolver {
         int[] row1 = new int[BOARD_SIZE_9BY9];
         promptMessage(1);
         return getRowInt(row1);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -115,7 +133,6 @@ public class SudokuSolver {
         int[] row2 = new int[BOARD_SIZE_9BY9];
         promptMessage(2);
         return getRowInt(row2);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -125,7 +142,6 @@ public class SudokuSolver {
         int[] row3 = new int[BOARD_SIZE_9BY9];
         promptMessage(3);
         return getRowInt(row3);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -145,7 +161,6 @@ public class SudokuSolver {
         int[] row5 = new int[BOARD_SIZE_9BY9];
         promptMessage(5);
         return getRowInt(row5);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -155,7 +170,6 @@ public class SudokuSolver {
         int[] row6 = new int[BOARD_SIZE_9BY9];
         promptMessage(6);
         return getRowInt(row6);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -165,7 +179,6 @@ public class SudokuSolver {
         int[] row7 = new int[BOARD_SIZE_9BY9];
         promptMessage(7);
         return getRowInt(row7);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -175,7 +188,6 @@ public class SudokuSolver {
         int[] row8 = new int[BOARD_SIZE_9BY9];
         promptMessage(8);
         return getRowInt(row8);
-
     }
 
     //REQUIRES: Number in [1, 9]
@@ -185,16 +197,15 @@ public class SudokuSolver {
         int[] row9 = new int[BOARD_SIZE_9BY9];
         promptMessage(9);
         return getRowInt(row9);
-
     }
 
     //REQUIRES: Number in [1, 9]
     //EFFECTS: Prints out prompt message depending on the sudoku row
     private void promptMessage(int num) {
+        System.out.println();
         System.out.print("Please enter the numbers in the " + getRowNum(num) + " row of a 9 x 9 sudoku board: \n");
         System.out.print("Please represent empty spaces/unassigned numbers with a 0! \n");
         System.out.print("Press enter after each entry! \n");
-
     }
 
 

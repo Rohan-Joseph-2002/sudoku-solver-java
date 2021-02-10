@@ -3,9 +3,14 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SudokuSolver9by9Tests {
+
+    private static final int BOARD_SIZE = 9;
 
     private SudokuSolver9By9 testBoard1;
 
@@ -97,75 +102,64 @@ public class SudokuSolver9by9Tests {
         testBoardNotSolvable = new SudokuSolver9By9(board3);
 
         testBoardSolvable = new SudokuSolver9By9(board4);
-
     }
 
     @Test
     public void testNotInSameRow() {
         assertFalse(testBoard1.inSameRow(board1, testRowBoard1,5));
         assertFalse(testBoard2.inSameRow(board2, testRowBoard2, 9));
-
     }
 
     @Test
     public void testInSameRow() {
         assertTrue(testBoard1.inSameRow(board1, testRowBoard1, 2));
         assertTrue(testBoard2.inSameRow(board2, testRowBoard2, 7));
-
     }
 
     @Test
     public void testNotInSameColumn() {
         assertFalse(testBoard1.inSameColumn(board1, testColumnBoard1, 5));
         assertFalse(testBoard2.inSameColumn(board2, testColumnBoard2, 9));
-
     }
 
     @Test
     public void testInSameColumn() {
         assertTrue(testBoard1.inSameColumn(board1, testColumnBoard1, 3));
         assertTrue(testBoard2.inSameColumn(board2, testColumnBoard2, 8));
-
     }
 
     @Test
     public void testNotInSameSubGrid() {
         assertFalse(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 5));
         assertFalse(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 9));
-
     }
 
     @Test
     public void testInSameSubGrid() {
         assertTrue(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 7));
         assertTrue(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 6));
-
     }
 
     @Test
     public void testCanNotAddNum() {
         assertFalse(testBoard1.canAddNum(board1, 0, 0, 7));
         assertFalse(testBoard2.canAddNum(board2, 7, 1, 6));
-
     }
 
     @Test
     public void testCanAddNum() {
         assertTrue(testBoard1.canAddNum(board1, 0, 0, 5));
         assertTrue(testBoard2.canAddNum(board2, 7, 1, 8));
-
     }
 
     @Test
     public void testSolveBoardNotSolvable() {
         assertFalse(testBoardNotSolvable.solveBoard(board3));
-
     }
 
     @Test
     public void testSolveBoardSolvable() {
         assertTrue(testBoardSolvable.solveBoard(board4));
-
     }
 
     @Test
@@ -174,8 +168,9 @@ public class SudokuSolver9by9Tests {
         testBoardSolvable.solveBoard(board4);
         answerBoard = testBoardSolvable.getSolvedBoard();
 
-        assertEquals(solution, answerBoard);
-
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            Arrays.equals(solution[i], answerBoard[i]);
+        }
     }
 
 }

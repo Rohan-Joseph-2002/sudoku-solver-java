@@ -7,8 +7,7 @@ will be able to take user sudoku board inputs, check if it solvable and then sol
 sudoku board, displaying the solved board as a result. If the sudoku board is 
 not solvable, the application will print out a statement detailing this. It is
 important to note that the current iteration of my application will be limited to
-9 x 9 sudoku boards, however I will try to incorporate other board sizes in later
-iterations of this application.
+9 x 9 sudoku boards.
 
 This application can be used by anyone with an interest in sudoku but needs help
 in solving a sudoku board. This application serves to check whether a solvable, 
@@ -32,3 +31,4 @@ question board (i.e. the solved sudoku board) if the inputted sudoku board is
 solvable.
 5. As a user, I want to be able to have the option to try another sudoku board to solve,
 without having to re-run the console application.
+6. As a user, I want to be able to label my answer sudoku boards and search for them later.

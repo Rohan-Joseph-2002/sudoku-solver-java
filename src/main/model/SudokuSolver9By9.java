@@ -8,7 +8,8 @@ public class SudokuSolver9By9 implements SolveBoard {
     private final int[][] sudokuBoard;
     private int[][] solvedBoard;
 
-    //Constructor
+    //REQUIRES: BOARD_SIZE
+    //EFFECTS: Creates a 9 by 9 Matrix
     public SudokuSolver9By9(int[][] sudokuBoard) {
         this.sudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
 
@@ -18,7 +19,6 @@ public class SudokuSolver9By9 implements SolveBoard {
                     0, this.sudokuBoard[rowIndex],
                     0, BOARD_SIZE);
         }
-
     }
 
     //REQUIRES: A valid sudoku board 
@@ -37,7 +37,6 @@ public class SudokuSolver9By9 implements SolveBoard {
         }
         this.solvedBoard = sudokuBoard;
         return true;   //NOTE: Sudoku is solved
-
     }
 
     //REQUIRES: rowIndex and columnIndex must be one of [0, 8]
@@ -77,7 +76,6 @@ public class SudokuSolver9By9 implements SolveBoard {
         return !inSameRow(sudokuBoard, rowIndex, num)
                 && !inSameColumn(sudokuBoard, columnIndex, num)
                 && !inSameSubGrid(sudokuBoard, subRow, subColumn, num);
-
     }
 
     //REQUIRES: Given number must be in between [1, 9]
@@ -90,7 +88,6 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
         return false;
-
     }
 
     //REQUIRES: Given number must be in between [1, 9]
@@ -103,7 +100,6 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
         return false;
-
     }
 
     //REQUIRES: Given number must be in between [1, 9]
@@ -118,7 +114,6 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
         return false;
-
     }
 
 }
