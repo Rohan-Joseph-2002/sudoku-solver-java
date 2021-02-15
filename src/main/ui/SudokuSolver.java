@@ -20,7 +20,7 @@ public class SudokuSolver {
     }
 
     //MODIFIES: this
-    //EFFECTS: Runs the sudoku solver (i.e., takes input, runs it through the solver, and displays the solution)
+    //EFFECTS: Takes input, runs it through the solver, and displays the solution, or returns a false statement.
     public void runSudokuSolver() {
         scanner = new Scanner(System.in);
 
