@@ -31,4 +31,7 @@ question board (i.e. the solved sudoku board) if the inputted sudoku board is
 solvable.
 5. As a user, I want to be able to have the option to try another sudoku board to solve,
 without having to re-run the console application.
-6. As a user, I want to be able to label my answer sudoku boards and search for them later.
+6. As a user, I want to be able to save an SudokuAnswerBoard to file.
+7. As a user, I want to be able load a SudokuAnswerBoard from file.
+8. As a user, I want to be able to choose whether I want to save an answer board 
+(after each answer) board is generated, or not.
