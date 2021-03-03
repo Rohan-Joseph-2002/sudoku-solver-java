@@ -37,9 +37,14 @@ public class SudokuAnswerBoardsTests {
 
     @BeforeEach
     public void setup() {
-        answerBoard1 = new SudokuAnswerBoard(board1);
-        answerBoard2 = new SudokuAnswerBoard(board2);
-        listOfAnswerBoards = new SudokuAnswerBoards();
+        answerBoard1 = new SudokuAnswerBoard("b1", board1);
+        answerBoard2 = new SudokuAnswerBoard("b2", board2);
+        listOfAnswerBoards = new SudokuAnswerBoards("test");
+    }
+
+    @Test
+    public void testGetName() {
+        assertEquals("test", listOfAnswerBoards.getName());
     }
 
     @Test
