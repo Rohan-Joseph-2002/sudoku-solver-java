@@ -8,6 +8,7 @@ import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,12 +20,11 @@ public class SudokuSolver {
 
     private Scanner scanner;
     private boolean shouldRun = true;
-    private int[][] questionSudokuBoard;
+    private boolean shouldLoad = false;
     private int[][] answerSudokuBoard;
-    private SudokuSolver9By9 solve9By9;
     private SudokuAnswerBoards listOfAnswerBoards;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     //EFFECTS: Runs the Sudoku Solver
     public SudokuSolver() {
@@ -38,7 +38,7 @@ public class SudokuSolver {
     //MODIFIES: this
     //EFFECTS: Runs the Sudoku Solver
     public void runSudokuSolver() {
-        String userInput =  null;
+        String userInput;
         scanner = new Scanner(System.in);
 
         while (shouldRun) {
@@ -57,11 +57,13 @@ public class SudokuSolver {
     //EFFECTS: Displays a series of options for the user
     private void displayOptions() {
         System.out.println("\n Please select from:");
-        System.out.println("\t i -> Input and Solve Sudoku Question Board");
-        System.out.println("\t d -> Display previous Sudoku Answer Boards");
-        System.out.println("\t l -> Load from File");
-        System.out.println("\t s -> Save to File");
-        System.out.println("\t q -> Quit Sudoku Solver");
+        System.out.println("\t i - Input and Solve Sudoku Question Board");
+        System.out.println("\t d - Display previous Sudoku Answer Boards");
+        System.out.println("\t l - Load from File");
+        System.out.println("\t s - Save to File");
+        System.out.println("\t q - Quit Sudoku Solver");
+        System.out.println("\n NOTE: If you save without loading the file, "
+                + "it will overwrite the existing data. \n");
     }
 
     //MODIFIES: this
@@ -72,9 +74,9 @@ public class SudokuSolver {
         } else if (userInput.equalsIgnoreCase("d")) {
             displayAnswerBoards();
         } else if (userInput.equalsIgnoreCase("l")) {
-            saveAnswerBoards();
-        } else if (userInput.equalsIgnoreCase("s")) {
             loadAnswerBoards();
+        } else if (userInput.equalsIgnoreCase("s")) {
+            saveAnswerBoards();
         } else {
             System.out.println("Invalid selection.");
         }
@@ -82,9 +84,33 @@ public class SudokuSolver {
 
     //EFFECTS: Takes input, runs it through the solver, and displays the solution, or returns a false statement.
     private void runQuestionSolver() {
-        questionSudokuBoard = new int[9][9];
+        boolean shouldRun = true;
+        scanner = new Scanner(System.in);
+        while (shouldRun) {
+            if (shouldLoad) {
+                solveSudoku();
+                shouldRun = false;
+            }
+            if (!shouldLoad) {
+                System.out.println("\n The file has not been loaded.");
+                System.out.println("\n Without loading the file, any data that is saved "
+                        + "will be overwritten.");
+                System.out.println("\n Are you sure you want to proceed? (yes/no) ");
+                String userInput = scanner.next();
+                if (userInput.equalsIgnoreCase("yes")) {
+                    shouldLoad = true;
+                } else if (userInput.equalsIgnoreCase("no")) {
+                    shouldRun = false;
+                }
+            }
+        }
+    }
+
+    //EFFECTS: Solves the Sudoku question. If a solution does not exist, prints out a false statement.
+    private void solveSudoku() {
+        int[][] questionSudokuBoard = new int[9][9];
         getQuestionSudokuBoard(questionSudokuBoard);
-        solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+        SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
         System.out.print("\n Here is your question board: \n");
         displayQuestionBoard(questionSudokuBoard);
         if (solve9By9.solveBoard(questionSudokuBoard)) {
@@ -94,11 +120,111 @@ public class SudokuSolver {
         }
     }
 
+    //EFFECTS: Gets and displays solved sudoku board
+    private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
+        List<String> keyList = new ArrayList<>();
+        List<SudokuAnswerBoard> boardList = listOfAnswerBoards.returnList();
+
+        System.out.print("\n Here is the solution: \n");
+        answerSudokuBoard = solve9By9.getSolvedBoard();
+        displaySolvedBoard(answerSudokuBoard);
+        getSavedBoards(listOfAnswerBoards);
+        for (SudokuAnswerBoard board : boardList) {
+            keyList.add(board.getName());
+        }
+        saveBoard(keyList, boardList, answerSudokuBoard);
+    }
+
+    //EFFECTS: Saves board, if given name is not present as a name of an existing board
+    private void saveBoard(List<String> keyList, List<SudokuAnswerBoard> boardList, int[][] board) {
+        Scanner scanner = new Scanner(System.in);
+        String answerBoardName = null;
+        boolean shouldSave = false;
+        System.out.println("\n Please do not name you answer board with a saved name");
+        while (!shouldSave) {
+            System.out.print("\n Please enter a name for your Sudoku Answer Board: ");
+            answerBoardName = scanner.next();
+            if (keyList.contains(answerBoardName)) {
+                System.out.println("\n This name is already being used. \n");
+            } else {
+                shouldSave = true;
+            }
+        }
+        SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
+        System.out.println("\n Your answer board has been saved. \n");
+        listOfAnswerBoards.add(sudokuAnswerBoard);
+    }
+
+    private boolean containSameBoard(List<SudokuAnswerBoard> boardList, SudokuAnswerBoard board) {
+        boolean contains = false;
+        for (SudokuAnswerBoard sudokuAnswerBoard : boardList) {
+            contains = equalBoard(board, sudokuAnswerBoard);
+            break;
+        }
+        return contains;
+    }
+
+    private boolean equalBoard(SudokuAnswerBoard sudokuBoard1, SudokuAnswerBoard sudokuBoard2) {
+        boolean equal = false;
+        int[][] board1 = sudokuBoard1.returnAnswerBoard();
+        int[][] board2 = sudokuBoard2.returnAnswerBoard();
+        for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
+            for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
+                if (board1[row][column] == board2[row][column]) {
+                    equal = true;
+                    break;
+                }
+            }
+        }
+        return  equal;
+    }
+
+    //EFFECTS: Returns true if boardList contains a given answer board
+//    public boolean containSameBoard(ArrayList<int[][]> boardList, int[][] board) {
+//        boolean contains = false;
+//        for (int[][] listBoard : boardList) {
+//            for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
+//                for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
+//                    if (board[row][column] == listBoard[row][column]) {
+//                        contains = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        return contains;
+//    }
+
     //EFFECTS: Prints all the SudokuAnswerBoards in the List to the console
     private void displayAnswerBoards() {
-        List<SudokuAnswerBoard> boards = listOfAnswerBoards.returnList();
-        for (SudokuAnswerBoard board : boards) {
-            System.out.println(board);
+        String keyInput;
+        scanner = new Scanner(System.in);
+        boolean shouldDisplay = false;
+        try {
+            SudokuAnswerBoards answerBoards = jsonReader.read();
+            getSavedBoards(answerBoards);
+            System.out.println("\n Please enter the name of your Sudoku Answer Board: ");
+            keyInput = scanner.next();
+            for (SudokuAnswerBoard board : answerBoards.returnList()) {
+                if (keyInput.equals(board.getName())) {
+                    int[][] displayAnswer = board.returnAnswerBoard();
+                    displayLoadedBoard(displayAnswer);
+                    shouldDisplay = true;
+                }
+            }
+            if (!shouldDisplay) {
+                System.out.println("\n Invalid key. \n");
+            }
+        } catch (IOException e) {
+            System.out.println("\n Unable to read file. \n");
+        }
+    }
+
+    //EFFECTS: Returns the names of all the saved boards in answerBoards
+    private void getSavedBoards(SudokuAnswerBoards answerBoards) {
+        System.out.println("\n Here are your currently saved answer boards:");
+        for (SudokuAnswerBoard board : answerBoards.returnList()) {
+            System.out.println("\t - " + board.getName());
         }
     }
 
@@ -109,9 +235,9 @@ public class SudokuSolver {
             jsonWriter.openWriter();
             jsonWriter.write(listOfAnswerBoards);
             jsonWriter.closeWriter();
-            System.out.println("Saved " + listOfAnswerBoards.getName() + " to " + JSON_STORAGE);
+            System.out.println("\n Saved " + listOfAnswerBoards.getName() + " to " + JSON_STORAGE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORAGE);
+            System.out.println("\n Unable to write to file: " + JSON_STORAGE);
         }
     }
 
@@ -121,7 +247,8 @@ public class SudokuSolver {
     private void loadAnswerBoards() {
         try {
             listOfAnswerBoards = jsonReader.read();
-            System.out.println("Loaded " + listOfAnswerBoards.getName() + " from " + JSON_STORAGE);
+            System.out.println("\n Loaded " + listOfAnswerBoards.getName() + " from " + JSON_STORAGE);
+            shouldLoad = true;
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORAGE);
         }
@@ -141,17 +268,6 @@ public class SudokuSolver {
         questionSudokuBoard[8] = getRowNine();
     }
 
-    //EFFECTS: Gets and displays solved sudoku board
-    private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\n Here is the solution: \n");
-        answerSudokuBoard = solve9By9.getSolvedBoard();
-        displaySolvedBoard(answerSudokuBoard);
-        System.out.print("\n Please enter a name for your Sudoku Answer Board: ");
-        String answerBoardName = scanner.nextLine();
-        listOfAnswerBoards.add(new SudokuAnswerBoard(answerBoardName, answerSudokuBoard));
-    }
-
     //EFFECTS: Displays question sudoku board.
     private void displayQuestionBoard(int[][] questionBoard) {
         getBoardDisplay(questionBoard);
@@ -160,6 +276,10 @@ public class SudokuSolver {
     //EFFECTS: Displays solved sudoku board.
     private void displaySolvedBoard(int[][] answerBoard) {
         getBoardDisplay(answerBoard);
+    }
+
+    private void displayLoadedBoard(int[][] displayBoard) {
+        getBoardDisplay(displayBoard);
     }
 
     //EFFECTS: Displays a given matrix in a 9 by 9 board

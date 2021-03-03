@@ -13,6 +13,16 @@ public class SudokuAnswerBoard implements Writable {
         this.solvedBoard = board;
     }
 
+    //EFFECTS: Returns a SudokuAnswerBoard as a int[][]
+    public int[][] returnAnswerBoard() {
+        return this.solvedBoard;
+    }
+
+    //EFFECTS: Returns name of SudokuAnswerBoard
+    public String getName() {
+        return this.name;
+    }
+
     //EFFECTS: Returns this as JSON Object
     @Override
     public JSONObject toJson() {

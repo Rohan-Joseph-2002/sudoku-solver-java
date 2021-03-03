@@ -63,7 +63,15 @@ public class JsonReader {
     //         SudokuAnswerBoards
     private void addSudokuAnswerBoard(SudokuAnswerBoards boards, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        int[][] answerBoard = (int[][]) jsonObject.get("answer board");
+        JSONArray jsonArray = jsonObject.getJSONArray("answer board");
+        int length = jsonArray.length();
+        int[][] answerBoard = new int[length][length];
+        for (int i = 0; i < length; i++) {
+            JSONArray row = jsonArray.getJSONArray(i);
+            for (int j = 0; j < length; j++) {
+                answerBoard[i][j] = row.getInt(j);
+            }
+        }
         SudokuAnswerBoard board = new SudokuAnswerBoard(name, answerBoard);
         boards.add(board);
     }

@@ -35,3 +35,5 @@ without having to re-run the console application.
 7. As a user, I want to be able load a SudokuAnswerBoard from file.
 8. As a user, I want to be able to choose whether I want to save an answer board 
 (after each answer) board is generated, or not.
+9. As a user, I want to be prompted if a given name, for a SudokuAnswerBoard,
+has already been used.
