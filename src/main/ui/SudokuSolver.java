@@ -81,6 +81,7 @@ public class SudokuSolver {
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: Takes input, runs it through the solver, and displays the solution, or returns a false statement.
     private void runQuestionSolver() {
         boolean shouldRun = true;
@@ -105,6 +106,7 @@ public class SudokuSolver {
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: Solves the Sudoku question. If a solution does not exist, prints out a false statement.
     private void solveSudoku() {
         int[][] questionSudokuBoard = new int[9][9];
@@ -115,10 +117,11 @@ public class SudokuSolver {
         if (solve9By9.solveBoard(questionSudokuBoard)) {
             getSolvedSudokuBoard(solve9By9);
         } else {
-            System.out.print("\n Unfortunately, a solution doesn't exist :( \n");
+            System.out.print("\n Unfortunately, a solution doesn't exist :( \n\n");
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: Gets and displays solved sudoku board
     private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
         List<String> keyList = new ArrayList<>();
@@ -131,26 +134,49 @@ public class SudokuSolver {
         for (SudokuAnswerBoard board : boardList) {
             keyList.add(board.getName());
         }
-        saveBoard(keyList, boardList, answerSudokuBoard);
+        saveBoard(keyList, answerSudokuBoard);
     }
 
+    //MODIFIES: this
     //EFFECTS: Saves board, if given name is not present as a name of an existing board
-    private void saveBoard(List<String> keyList, List<SudokuAnswerBoard> boardList, int[][] board) {
+    private void saveBoard(List<String> keyList, int[][] board) {
         Scanner scanner = new Scanner(System.in);
         String answerBoardName = null;
-        boolean shouldSave = false;
-        System.out.println("\n Please do not name you answer board with a saved name");
-        while (!shouldSave) {
+        boolean sameName = false;
+        System.out.println("\n Please do not name you answer board with a saved name.");
+        while (!sameName) {
             System.out.print("\n Please enter a name for your Sudoku Answer Board: ");
             answerBoardName = scanner.next();
             if (keyList.contains(answerBoardName)) {
                 System.out.println("\n This name is already being used. \n");
             } else {
-                shouldSave = true;
+                sameName = true;
             }
         }
-        SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
-        listOfAnswerBoards.add(sudokuAnswerBoard);
+        canSave(board, answerBoardName);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Allows the user to decide whether they want to save a SudokuAnswerBoard or not.
+    private void canSave(int[][] board, String answerBoardName) {
+        Scanner scanner = new Scanner(System.in);
+        boolean saveBoard = true;
+        while (saveBoard) {
+            System.out.println("\n Would you like to save this board to file? (yes/no)");
+            String userInput = scanner.next();
+            if (userInput.equalsIgnoreCase("yes")) {
+                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
+                listOfAnswerBoards.add(sudokuAnswerBoard);
+                saveAnswerBoards();
+                System.out.println("\n Your Sudoku Answer Board has been saved! \n");
+                saveBoard = false;
+            } else if (userInput.equalsIgnoreCase("no")) {
+                System.out.println("\n Your Sudoku Answer Board has not been saved! \n");
+                saveBoard = false;
+            } else {
+                System.out.println("\n Invalid option. \n");
+            }
+        }
     }
 
     //EFFECTS: Prints all the SudokuAnswerBoards in the List to the console
