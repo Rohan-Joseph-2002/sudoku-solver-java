@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SudokuAnswerBoardsTests {
@@ -35,10 +38,13 @@ public class SudokuAnswerBoardsTests {
             {2,3,9,8,4,1,5,6,7}
     };
 
+    private List<SudokuAnswerBoard> sudokuAnswerBoards;
+
     @BeforeEach
     public void setup() {
         answerBoard1 = new SudokuAnswerBoard("b1", board1);
         answerBoard2 = new SudokuAnswerBoard("b2", board2);
+        sudokuAnswerBoards = new ArrayList<>();
         listOfAnswerBoards = new SudokuAnswerBoards("test");
     }
 
@@ -63,6 +69,20 @@ public class SudokuAnswerBoardsTests {
         listOfAnswerBoards.add(answerBoard1);
         listOfAnswerBoards.add(answerBoard1);
         assertEquals(2, listOfAnswerBoards.getLength());
+    }
+
+    @Test
+    public void testGetListOfAnswerBoardsEmptyLists() {
+        assertEquals(sudokuAnswerBoards, listOfAnswerBoards.getListOfAnswerBoards());
+    }
+
+    @Test
+    public void testGetListOfAnswerBoardsMultipleBoards() {
+        sudokuAnswerBoards.add(answerBoard1);
+        sudokuAnswerBoards.add(answerBoard2);
+        listOfAnswerBoards.add(answerBoard1);
+        listOfAnswerBoards.add(answerBoard2);
+        assertEquals(sudokuAnswerBoards, listOfAnswerBoards.getListOfAnswerBoards());
     }
 
 }

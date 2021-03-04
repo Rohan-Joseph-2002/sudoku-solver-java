@@ -34,7 +34,7 @@ public class SudokuAnswerBoards implements Writable {
     }
 
     //EFFECTS: Returns List of SudokuAnswerBoard
-    public List<SudokuAnswerBoard> returnList() {
+    public List<SudokuAnswerBoard> getListOfAnswerBoards() {
         return sudokuAnswerBoards;
     }
 

@@ -3,10 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuSolver9by9Tests {
 
@@ -167,9 +164,10 @@ public class SudokuSolver9by9Tests {
         int[][] answerBoard;
         testBoardSolvable.solveBoard(board4);
         answerBoard = testBoardSolvable.getSolvedBoard();
-
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            Arrays.equals(solution[i], answerBoard[i]);
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int column = 0; column < BOARD_SIZE; column++) {
+                assertEquals(solution[row][column], answerBoard[row][column]);
+            }
         }
     }
 

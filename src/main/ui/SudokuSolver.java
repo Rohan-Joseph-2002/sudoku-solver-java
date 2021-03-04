@@ -21,7 +21,6 @@ public class SudokuSolver {
     private Scanner scanner;
     private boolean shouldRun = true;
     private boolean shouldLoad = false;
-    private int[][] answerSudokuBoard;
     private SudokuAnswerBoards listOfAnswerBoards;
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
@@ -123,10 +122,10 @@ public class SudokuSolver {
     //EFFECTS: Gets and displays solved sudoku board
     private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
         List<String> keyList = new ArrayList<>();
-        List<SudokuAnswerBoard> boardList = listOfAnswerBoards.returnList();
+        List<SudokuAnswerBoard> boardList = listOfAnswerBoards.getListOfAnswerBoards();
 
         System.out.print("\n Here is the solution: \n");
-        answerSudokuBoard = solve9By9.getSolvedBoard();
+        int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
         displaySolvedBoard(answerSudokuBoard);
         getSavedBoards(listOfAnswerBoards);
         for (SudokuAnswerBoard board : boardList) {
@@ -151,49 +150,8 @@ public class SudokuSolver {
             }
         }
         SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
-        System.out.println("\n Your answer board has been saved. \n");
         listOfAnswerBoards.add(sudokuAnswerBoard);
     }
-
-    private boolean containSameBoard(List<SudokuAnswerBoard> boardList, SudokuAnswerBoard board) {
-        boolean contains = false;
-        for (SudokuAnswerBoard sudokuAnswerBoard : boardList) {
-            contains = equalBoard(board, sudokuAnswerBoard);
-            break;
-        }
-        return contains;
-    }
-
-    private boolean equalBoard(SudokuAnswerBoard sudokuBoard1, SudokuAnswerBoard sudokuBoard2) {
-        boolean equal = false;
-        int[][] board1 = sudokuBoard1.returnAnswerBoard();
-        int[][] board2 = sudokuBoard2.returnAnswerBoard();
-        for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
-            for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
-                if (board1[row][column] == board2[row][column]) {
-                    equal = true;
-                    break;
-                }
-            }
-        }
-        return  equal;
-    }
-
-    //EFFECTS: Returns true if boardList contains a given answer board
-//    public boolean containSameBoard(ArrayList<int[][]> boardList, int[][] board) {
-//        boolean contains = false;
-//        for (int[][] listBoard : boardList) {
-//            for (int row = 0; row < BOARD_SIZE_9BY9; row++) {
-//                for (int column = 0; column < BOARD_SIZE_9BY9; column++) {
-//                    if (board[row][column] == listBoard[row][column]) {
-//                        contains = true;
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//        return contains;
-//    }
 
     //EFFECTS: Prints all the SudokuAnswerBoards in the List to the console
     private void displayAnswerBoards() {
@@ -205,7 +163,7 @@ public class SudokuSolver {
             getSavedBoards(answerBoards);
             System.out.println("\n Please enter the name of your Sudoku Answer Board: ");
             keyInput = scanner.next();
-            for (SudokuAnswerBoard board : answerBoards.returnList()) {
+            for (SudokuAnswerBoard board : answerBoards.getListOfAnswerBoards()) {
                 if (keyInput.equals(board.getName())) {
                     int[][] displayAnswer = board.returnAnswerBoard();
                     displayLoadedBoard(displayAnswer);
@@ -223,7 +181,7 @@ public class SudokuSolver {
     //EFFECTS: Returns the names of all the saved boards in answerBoards
     private void getSavedBoards(SudokuAnswerBoards answerBoards) {
         System.out.println("\n Here are your currently saved answer boards:");
-        for (SudokuAnswerBoard board : answerBoards.returnList()) {
+        for (SudokuAnswerBoard board : answerBoards.getListOfAnswerBoards()) {
             System.out.println("\t - " + board.getName());
         }
     }
