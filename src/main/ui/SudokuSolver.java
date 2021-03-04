@@ -153,19 +153,19 @@ public class SudokuSolver {
                 sameName = true;
             }
         }
-        canSave(board, answerBoardName);
+        SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
+        canSave(sudokuAnswerBoard);
     }
 
     //MODIFIES: this
     //EFFECTS: Allows the user to decide whether they want to save a SudokuAnswerBoard or not.
-    private void canSave(int[][] board, String answerBoardName) {
+    private void canSave(SudokuAnswerBoard sudokuAnswerBoard) {
         Scanner scanner = new Scanner(System.in);
         boolean saveBoard = true;
         while (saveBoard) {
             System.out.println("\n Would you like to save this board to file? (yes/no)");
             String userInput = scanner.next();
             if (userInput.equalsIgnoreCase("yes")) {
-                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
                 listOfAnswerBoards.add(sudokuAnswerBoard);
                 saveAnswerBoards();
                 System.out.println("\n Your Sudoku Answer Board has been saved! \n");
