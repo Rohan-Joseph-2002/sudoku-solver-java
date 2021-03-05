@@ -8,7 +8,8 @@ public class SudokuSolver9By9 implements SolveBoard {
     private final int[][] sudokuBoard;
     private int[][] solvedBoard;
 
-    //REQUIRES: BOARD_SIZE
+    //REQUIRES: A valid Sudoku Board AND BOARD_SIZE
+    //MODIFIES: this
     //EFFECTS: Creates a 9 by 9 Matrix
     public SudokuSolver9By9(int[][] sudokuBoard) {
         this.sudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
