@@ -10,7 +10,6 @@ public class SudokuSolver9by9Tests {
     private static final int BOARD_SIZE = 9;
 
     private SudokuSolver9By9 testBoard1;
-
     private final int[][] board1 = {
             {0,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},

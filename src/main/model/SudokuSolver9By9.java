@@ -21,7 +21,6 @@ public class SudokuSolver9By9 implements SolveBoard {
         }
     }
 
-    //REQUIRES: A valid sudoku board 
     //MODIFIES: this
     //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
     @Override
