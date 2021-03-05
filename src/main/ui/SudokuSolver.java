@@ -125,36 +125,53 @@ public class SudokuSolver {
     //EFFECTS: Gets and displays solved sudoku board
     private void getSolvedSudokuBoard(SudokuSolver9By9 solve9By9) {
         List<String> keyList = new ArrayList<>();
-        List<SudokuAnswerBoard> boardList = listOfAnswerBoards.getListOfAnswerBoards();
+        List<int[][]> boardList = new ArrayList<>();
 
         System.out.print("\n Here is the solution: \n");
         int[][] answerSudokuBoard = solve9By9.getSolvedBoard();
         displaySolvedBoard(answerSudokuBoard);
         getSavedBoards(listOfAnswerBoards);
-        for (SudokuAnswerBoard board : boardList) {
+        for (SudokuAnswerBoard board : listOfAnswerBoards.getListOfAnswerBoards()) {
             keyList.add(board.getName());
+            boardList.add(board.returnAnswerBoard());
         }
-        saveBoard(keyList, answerSudokuBoard);
+        saveBoard(keyList, answerSudokuBoard, boardList);
     }
 
     //MODIFIES: this
     //EFFECTS: Saves board, if given name is not present as a name of an existing board
-    private void saveBoard(List<String> keyList, int[][] board) {
+    private void saveBoard(List<String> keyList, int[][] board, List<int[][]> boardList) {
         Scanner scanner = new Scanner(System.in);
         String answerBoardName = null;
-        boolean sameName = false;
-        System.out.println("\n Please do not name you answer board with a saved name.");
-        while (!sameName) {
+        boolean save = false;
+        while (!save) {
             System.out.print("\n Please enter a name for your Sudoku Answer Board: ");
             answerBoardName = scanner.next();
             if (keyList.contains(answerBoardName)) {
                 System.out.println("\n This name is already being used. \n");
             } else {
-                sameName = true;
+                save = true;
             }
         }
-        SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
-        canSave(sudokuAnswerBoard);
+        isAlreadySavedBoard(board, boardList, answerBoardName);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Checks to see if there is an already saved board. If there is not, continues to
+    //         check if the user wants to saved the board or not.
+    private void isAlreadySavedBoard(int[][] board, List<int[][]> boardList, String answerBoardName) {
+        for (SudokuAnswerBoard answerBoard : listOfAnswerBoards.getListOfAnswerBoards()) {
+            int[][] board1 = answerBoard.returnAnswerBoard();
+            if (boardList.contains(board1)) {
+                System.out.println("\n This board has already been saved.");
+                System.out.println("\n Here is the name of your saved board: "
+                        + answerBoard.getName() + "\n");
+            } else {
+                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
+                canSave(sudokuAnswerBoard);
+            }
+            break;
+        }
     }
 
     //MODIFIES: this

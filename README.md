@@ -37,3 +37,6 @@ without having to re-run the console application.
 (after each answer) board is generated, or not.
 9. As a user, I want to be prompted when I am choosing a name for an SudokuAnswerBoard,
 if a given name has already been used.
+10. As a user, I want to be notified if a given Sudoku question board has already
+been answered, and be directed to the name of the saved file that contains
+the SudokuAnswerBoard.
