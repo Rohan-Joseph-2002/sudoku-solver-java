@@ -57,8 +57,8 @@ public class SudokuSolver {
     private void displayOptions() {
         System.out.println("\n Please select from:");
         System.out.println("\t i - Input and Solve Sudoku Question Board");
-        System.out.println("\t d - Display previous Sudoku Answer Boards");
-        System.out.println("\t l - Load from File");
+        System.out.println("\t d - Display Sudoku Answer Boards in Current Session");
+        System.out.println("\t l - Load File");
         System.out.println("\t s - Save to File");
         System.out.println("\t q - Quit Sudoku Solver");
         System.out.println("\n NOTE: If you save without loading the file, "
@@ -160,17 +160,18 @@ public class SudokuSolver {
     //EFFECTS: Checks to see if there is an already saved board. If there is not, continues to
     //         check if the user wants to saved the board or not.
     private void isAlreadySavedBoard(int[][] board, List<int[][]> boardList, String answerBoardName) {
+        boolean hasBeenSaved = false;
         for (SudokuAnswerBoard answerBoard : listOfAnswerBoards.getListOfAnswerBoards()) {
             int[][] board1 = answerBoard.returnAnswerBoard();
             if (boardList.contains(board1)) {
-                System.out.println("\n This board has already been saved.");
-                System.out.println("\n Here is the name of your saved board: "
-                        + answerBoard.getName() + "\n");
-            } else {
-                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
-                canSave(sudokuAnswerBoard);
+                System.out.println("\n This board has already been saved. \n");
+                hasBeenSaved = true;
             }
             break;
+        }
+        if (!hasBeenSaved) {
+            SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, board);
+            canSave(sudokuAnswerBoard);
         }
     }
 
@@ -179,11 +180,11 @@ public class SudokuSolver {
     private void canSave(SudokuAnswerBoard sudokuAnswerBoard) {
         Scanner scanner = new Scanner(System.in);
         boolean saveBoard = true;
+        listOfAnswerBoards.add(sudokuAnswerBoard);
         while (saveBoard) {
             System.out.println("\n Would you like to save this board to file? (yes/no)");
             String userInput = scanner.next();
             if (userInput.equalsIgnoreCase("yes")) {
-                listOfAnswerBoards.add(sudokuAnswerBoard);
                 saveAnswerBoards();
                 System.out.println("\n Your Sudoku Answer Board has been saved! \n");
                 saveBoard = false;
@@ -201,23 +202,18 @@ public class SudokuSolver {
         String keyInput;
         scanner = new Scanner(System.in);
         boolean shouldDisplay = false;
-        try {
-            SudokuAnswerBoards answerBoards = jsonReader.read();
-            getSavedBoards(answerBoards);
-            System.out.println("\n Please enter the name of your Sudoku Answer Board: ");
-            keyInput = scanner.next();
-            for (SudokuAnswerBoard board : answerBoards.getListOfAnswerBoards()) {
-                if (keyInput.equals(board.getName())) {
-                    int[][] displayAnswer = board.returnAnswerBoard();
-                    displayLoadedBoard(displayAnswer);
-                    shouldDisplay = true;
-                }
+        getSavedBoards(listOfAnswerBoards);
+        System.out.println("\n Please enter the name of your Sudoku Answer Board: ");
+        keyInput = scanner.next();
+        for (SudokuAnswerBoard board : listOfAnswerBoards.getListOfAnswerBoards()) {
+            if (keyInput.equals(board.getName())) {
+                int[][] displayAnswer = board.returnAnswerBoard();
+                displayLoadedBoard(displayAnswer);
+                shouldDisplay = true;
             }
-            if (!shouldDisplay) {
-                System.out.println("\n Invalid key. \n");
-            }
-        } catch (IOException e) {
-            System.out.println("\n Unable to read file. \n");
+        }
+        if (!shouldDisplay) {
+            System.out.println("\n Invalid key. \n");
         }
     }
 
