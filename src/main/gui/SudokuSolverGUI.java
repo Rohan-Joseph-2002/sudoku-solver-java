@@ -39,7 +39,7 @@ public class SudokuSolverGUI extends JFrame {
     private int[][] questionSudokuBoard;
     private int[][] answerSudokuBoard;
     private SudokuSolver9By9 solve9By9;
-    private SudokuAnswerBoards currentListOfAnswerBoards;
+    protected SudokuAnswerBoards currentListOfAnswerBoards;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private SessionSidePanel sessionSidePanel;
     private SidePanel sidePanel;
@@ -174,6 +174,7 @@ public class SudokuSolverGUI extends JFrame {
         String answerBoardName = JOptionPane.showInputDialog(frame, label);
         SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, answerSudokuBoard);
         currentListOfAnswerBoards.add(sudokuAnswerBoard);
+        updateSession();
     }
 
 

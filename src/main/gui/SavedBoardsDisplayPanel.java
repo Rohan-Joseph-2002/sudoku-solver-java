@@ -28,33 +28,29 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
 
     private final SudokuSolverGUI mainFrame;
     private final JPanel sidePanel;
-    //private final JScrollPane savedBoardsScrollPane;
-    private final JPanel savedBoardsScrollPane;
+    private final JPanel savedBoardsPane;
     //private boolean shouldLoad;
     private SudokuAnswerBoards savedListOfAnswerBoards;
-    private ArrayList<JButton> listOfButtons;
-    private JsonReader jsonReader;
+    private final ArrayList<JButton> listOfButtons;
+    private final JsonReader jsonReader;
 
     public SavedBoardsDisplayPanel(SudokuSolverGUI mainFrame, JPanel sidePanel) {
         this.mainFrame = mainFrame;
         this.sidePanel = sidePanel;
         //this.shouldLoad = mainFrame.shouldLoad;
-        savedListOfAnswerBoards = new SudokuAnswerBoards("Sudoku Solver Answers - GUI");
-        listOfButtons = new ArrayList<>();
-        jsonReader = new JsonReader(JSON_STORAGE);
+        this.savedListOfAnswerBoards = new SudokuAnswerBoards("Sudoku Solver Answers - GUI");
+        this.listOfButtons = new ArrayList<>();
+        this.jsonReader = new JsonReader(JSON_STORAGE);
 
         setBackground(Color.DARK_GRAY);
         setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
-//        savedBoardsScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-//                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        savedBoardsScrollPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
-
-        savedBoardsScrollPane = new JPanel();
+        savedBoardsPane = new JPanel();
+        savedBoardsPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
         displaySavedBoards();
 
-        add(savedBoardsScrollPane);
+        add(savedBoardsPane);
     }
 
     //REQUIRES:
@@ -74,6 +70,7 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
     //MODIFIES:
     //EFFECTS:
     private void displaySavedBoard() {
+        JPanel viewPanel = new JPanel();
         try {
             savedListOfAnswerBoards = jsonReader.read();
             for (SudokuAnswerBoard board : savedListOfAnswerBoards.getListOfAnswerBoards()) {
@@ -82,18 +79,19 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
                 JButton button = createJButton(text, command);
                 listOfButtons.add(button);
             }
-            JPanel viewPanel = new JPanel();
             viewPanel.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
             viewPanel.setAutoscrolls(true);
             for (JButton button : listOfButtons) {
                 button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 50));
                 viewPanel.add(button);
             }
-            savedBoardsScrollPane.add(viewPanel);
+            savedBoardsPane.add(viewPanel);
         } catch (IOException e) {
             JLabel unableLoad = new JLabel("Unable to load file from destination.");
             unableLoad.setFont(LABEL_FONT);
             JOptionPane.showMessageDialog(mainFrame, unableLoad);
+        } catch (NullPointerException e) {
+            savedBoardsPane.add(viewPanel);
         }
     }
 
