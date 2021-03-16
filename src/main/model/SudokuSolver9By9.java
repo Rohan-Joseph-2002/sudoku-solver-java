@@ -28,7 +28,6 @@ public class SudokuSolver9By9 implements SolveBoard {
     public boolean solveBoard(int[][] sudokuBoard) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                //NOTE: Checks to find an UNASSIGNED number position
                 if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
                     //NOTE: Tries every possible number to check if it can be assigned here
                     return getAssignment(sudokuBoard, rowIndex, columnIndex);
@@ -36,7 +35,7 @@ public class SudokuSolver9By9 implements SolveBoard {
             }
         }
         this.solvedBoard = sudokuBoard;
-        return true;   //NOTE: Sudoku is solved
+        return true;
     }
 
     //REQUIRES: rowIndex and columnIndex must be one of [0, 8]
