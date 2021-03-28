@@ -43,7 +43,6 @@ public class SudokuSolverGUI extends JFrame {
     private final JsonWriter jsonWriter;
     protected final JsonReader jsonReader;
 
-    private int[][] questionSudokuBoard;
     private int[][] answerSudokuBoard;
     private SudokuSolver9By9 solve9By9;
     protected SudokuAnswerBoards currentListOfAnswerBoards;
@@ -116,19 +115,13 @@ public class SudokuSolverGUI extends JFrame {
         if (!checkValidInput()) {
             showMessage("Invalid User Input. All values must be numbers  between 1 and 9");
         } else {
-            questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
+            int[][] questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
             getSudokuQuestionBoard(questionSudokuBoard);
             solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
-            try {
+            boolean solvable = solve9By9.solveBoard(questionSudokuBoard);
+            if (solvable) {
                 sudokuAnswerBoardToGUI();
-            } catch (NullPointerException e) {
-                for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-                    for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                        if (TEXT_FIELDS[rowIndex][columnIndex].getText().equals("0")) {
-                            TEXT_FIELDS[rowIndex][columnIndex].setText("");
-                        }
-                    }
-                }
+            } else {
                 showMessage("Unfortunately, a solution doesn't exist :(");
             }
         }
