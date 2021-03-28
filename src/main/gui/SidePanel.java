@@ -28,14 +28,11 @@ public class SidePanel extends JPanel implements ActionListener {
         JButton clearGrid = createJButton("Clear", "clear");
         JButton solveSudoku = createJButton("Solve", "solve");
         JButton saveCurrentSession = createJButton("Save", "save");
-        //JButton loadFromFile = createJButton("Load", "load");
 
         add(clearGrid);
         add(solveSudoku);
         add(saveCurrentSession);
-        //add(loadFromFile);
 
-        //setLayout(new GridLayout(4, 1));
         setLayout(new GridLayout(3, 1));
     }
 
@@ -56,14 +53,16 @@ public class SidePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("clear")) {
-            mainFrame.clearDisplayGrid();
-        } else if (command.equals("solve")) {
-            mainFrame.solveSudokuQuestionBoard();
-        } else if (command.equals("save")) {
-            mainFrame.saveAnswerBoards();
-        } //else if (command.equals("load")) {
-          //  mainFrame.loadAnswerBoards();
-        //}
+        switch (command) {
+            case "clear":
+                mainFrame.clearDisplayGrid();
+                break;
+            case "solve":
+                mainFrame.solveSudokuQuestionBoard();
+                break;
+            case "save":
+                mainFrame.saveAnswerBoards();
+                break;
+        }
     }
 }

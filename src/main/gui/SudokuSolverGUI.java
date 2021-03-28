@@ -6,18 +6,24 @@ import model.SudokuSolver9By9;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SudokuSolverGUI extends JFrame {
     protected static final int PANEL_STARTING_HEIGHT = 1750;
+    protected static final int PANEL_STARTING_WIDTH = 2550;
     private static final String JSON_STORAGE = "./data/answers.json";
     private static final String FONT_NAME = "Helvetica";
     private static final int BOARD_SIZE = 9;
-    private static final int PANEL_STARTING_WIDTH = 2550;
     private static final int SUDOKU_PANEL_WIDTH = 1750;
     private static final int SUDOKU_PANEL_HEIGHT = PANEL_STARTING_HEIGHT;
 
@@ -33,6 +39,7 @@ public class SudokuSolverGUI extends JFrame {
     private final JFrame frame;
     private final JPanel mainPanel;
     private final JPanel sudokuGridPanel;
+    private final SidePanel sidePanel;
     private final JsonWriter jsonWriter;
     protected final JsonReader jsonReader;
 
@@ -42,14 +49,9 @@ public class SudokuSolverGUI extends JFrame {
     protected SudokuAnswerBoards currentListOfAnswerBoards;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private SessionSidePanel sessionSidePanel;
-    private SidePanel sidePanel;
 
-    //private boolean shouldSave;
-    //protected boolean shouldLoad;
-
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: SudokuSolverGUI constructor
     public SudokuSolverGUI() {
         frame = new JFrame("Sudoku Solver");
         mainPanel = new JPanel();
@@ -64,9 +66,9 @@ public class SudokuSolverGUI extends JFrame {
 
         sidePanel = new SidePanel(this, mainPanel);
 
-        mainPanel.add(sessionSidePanel);
         mainPanel.add(sidePanel);
         mainPanel.add(sudokuGridPanel);
+        mainPanel.add(sessionSidePanel);
 
         createFrame();
 
@@ -75,13 +77,11 @@ public class SudokuSolverGUI extends JFrame {
 
         jsonWriter = new JsonWriter(JSON_STORAGE);
         jsonReader = new JsonReader(JSON_STORAGE);
-
-        //shouldLoad = false;
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: JTextField[9][9]
+    //MODIFIES: this
+    //EFFECTS: Styles the width, height, font, size and color of every JTextField
     private void styleTextFields() {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
@@ -95,9 +95,9 @@ public class SudokuSolverGUI extends JFrame {
         }
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: mainPanel
+    //MODIFIES: this
+    //EFFECTS: Creates the GUI Frame
     private void createFrame() {
         frame.add(mainPanel);
         frame.pack();
@@ -106,38 +106,38 @@ public class SudokuSolverGUI extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: JTextField[9][9]
+    //MODIFIES: this
+    //EFFECTS: Takes a user input Sudoku Question Board, turns it in a 9 by 9 matrix,
+    //         puts it through the Sudoku9by9Solver.
+    //         If solvable is true, displays the solved Sudoku Board, or a
+    //         JOptionPane indicating that the board cannot be solved.
     public void solveSudokuQuestionBoard() {
         if (!checkValidInput()) {
-            JLabel label = new JLabel("Invalid User Input. All values must be numbers  between 1 and 9");
-            label.setFont(LABEL_FONT);
-            JOptionPane.showMessageDialog(frame, label);
+            showMessage("Invalid User Input. All values must be numbers  between 1 and 9");
         } else {
-            guiToSudokuQuestionBoard();
-            if (solve9By9.solveBoard(questionSudokuBoard)) {
+            questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
+            getSudokuQuestionBoard(questionSudokuBoard);
+            solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+            try {
                 sudokuAnswerBoardToGUI();
-            } else {
-                JLabel label = new JLabel("Unfortunately, a solution doesn't exist :(");
-                label.setFont(LABEL_FONT);
-                JOptionPane.showMessageDialog(frame, label);
+            } catch (NullPointerException e) {
+                for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+                    for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
+                        if (TEXT_FIELDS[rowIndex][columnIndex].getText().equals("0")) {
+                            TEXT_FIELDS[rowIndex][columnIndex].setText("");
+                        }
+                    }
+                }
+                showMessage("Unfortunately, a solution doesn't exist :(");
             }
         }
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
-    private void guiToSudokuQuestionBoard() {
-        questionSudokuBoard = new int[9][9];
-        getSudokuQuestionBoard(questionSudokuBoard);
-        solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
-    }
-
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Gets the solved Sudoku Answer Board and outputs it on the Sudoku Grid Panel
+    //         Prompts the user whether they want to add the answer board to the current session
+    //         or not.
     private void sudokuAnswerBoardToGUI() {
         boolean shouldAdd = false;
         answerSudokuBoard = solve9By9.getSolvedBoard();
@@ -146,7 +146,7 @@ public class SudokuSolverGUI extends JFrame {
                 TEXT_FIELDS[rowIndex][columnIndex].setText(String.valueOf(answerSudokuBoard[rowIndex][columnIndex]));
             }
         }
-
+        playPopSound();
         while (!shouldAdd) {
             JLabel choice = new JLabel("Would you like to add this board to the current session? ");
             choice.setFont(LABEL_FONT);
@@ -157,30 +157,74 @@ public class SudokuSolverGUI extends JFrame {
             } else if (choiceAdd.equalsIgnoreCase("no")) {
                 shouldAdd = true;
             } else {
-                JLabel invalid = new JLabel("Invalid option!");
-                invalid.setFont(LABEL_FONT);
-                JOptionPane.showMessageDialog(frame, invalid);
+                showMessage("Invalid option!");
             }
         }
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Adds the Sudoku Answer Board to the current session
     private void addToCurrentSession() {
+        boolean sameName = true;
+        List<String> keyList = new ArrayList<>();
+        returnBoardNamesAndAnswerBoards(keyList);
+        while (sameName) {
+            String boardName = promptForBoardName();
+            if (keyList.contains(boardName)) {
+                showMessage("This name is being used. Please try again!");
+            } else {
+                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(boardName, answerSudokuBoard);
+                currentListOfAnswerBoards.add(sudokuAnswerBoard);
+                updateSession();
+                sameName = false;
+            }
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Displays a given String in a JOptionPane.showMessageDialog box
+    private void showMessage(String s) {
+        JLabel message = new JLabel(s);
+        message.setFont(LABEL_FONT);
+        JOptionPane.showMessageDialog(frame, message);
+    }
+
+    //EFFECTS: Adds every single board name - in both the current session and saved boards -
+    //         to a list of board names (keyList)
+    private void returnBoardNamesAndAnswerBoards(List<String> keyList) {
+        for (SudokuAnswerBoard savedBoard : savedListOfAnswerBoards.getListOfAnswerBoards()) {
+            keyList.add(savedBoard.getName());
+        }
+        for (SudokuAnswerBoard currentBoard : currentListOfAnswerBoards.getListOfAnswerBoards()) {
+            keyList.add(currentBoard.getName());
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Prompts the user for name for a Sudoku Answer Board
+    private String promptForBoardName() {
         JLabel label = new JLabel("NOTE: Once you have set a name, it CANNOT be changed. "
                 + "Please enter a name for your answer board: ");
         label.setFont(LABEL_FONT);
-        String answerBoardName = JOptionPane.showInputDialog(frame, label);
-        SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(answerBoardName, answerSudokuBoard);
-        currentListOfAnswerBoards.add(sudokuAnswerBoard);
-        updateSession();
+        return JOptionPane.showInputDialog(frame, label);
     }
 
+    //EFFECTS: Plays pop sound
+    private void playPopSound() {
+        String popSound = "./data/pop-sound.wav";
+        try {
+            File path = new File(popSound);
+            AudioInputStream input = AudioSystem.getAudioInputStream(path);
+            Clip clip = AudioSystem.getClip();
+            clip.open(input);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Clears ever JTextField in the Sudoku Grid Panel
     public void clearDisplayGrid() {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
@@ -189,21 +233,6 @@ public class SudokuSolverGUI extends JFrame {
             }
         }
     }
-
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
-//    public void saveToFile() {
-//        shouldSave = true;
-//        while (shouldSave) {
-//            if (shouldLoad) {
-//                saveToFile();
-//                shouldSave = false;
-//            } else {
-//                fileNotLoadedShouldSave();
-//            }
-//        }
-//    }
 
     //MODIFIES: this
     //EFFECTS: Saves the SudokuAnswerBoards to File
@@ -216,37 +245,13 @@ public class SudokuSolverGUI extends JFrame {
             jsonWriter.openWriter();
             jsonWriter.write(savedListOfAnswerBoards);
             jsonWriter.closeWriter();
-            JLabel save = new JLabel("Your Sudoku Answer Boards has been saved successfully to "
+            showMessage("Your Sudoku Answer Boards has been saved successfully to "
                     + JSON_STORAGE);
-            save.setFont(LABEL_FONT);
-            JOptionPane.showMessageDialog(frame, save);
             updateSession();
         } catch (FileNotFoundException e) {
-            JLabel unableSave = new JLabel("Unable to save to destination file.");
-            unableSave.setFont(LABEL_FONT);
-            JOptionPane.showMessageDialog(frame, unableSave);
+            showMessage("Unable to save to destination file.");
         }
     }
-
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
-//    private void fileNotLoadedShouldSave() {
-//        JLabel notLoaded = new JLabel("You have not loaded in the file. "
-//                + "If you save without loading, you will overwrite ALL existing data. "
-//                + "Are you sure you want to proceed? ");
-//        notLoaded.setFont(LABEL_FONT);
-//        String userInput = JOptionPane.showInputDialog(frame, notLoaded);
-//        if (userInput.equalsIgnoreCase("yes")) {
-//            shouldLoad = true;
-//        } else if (userInput.equalsIgnoreCase("no")) {
-//            shouldSave = false;
-//        } else {
-//            JLabel invalid = new JLabel("Invalid option!");
-//            invalid.setFont(LABEL_FONT);
-//            JOptionPane.showMessageDialog(frame, invalid);
-//        }
-//    }
 
     //MODIFIES: this
     //EFFECTS: Loads SudokuAnswerBoards from File
@@ -258,22 +263,22 @@ public class SudokuSolverGUI extends JFrame {
             JOptionPane.showMessageDialog(frame, load);
             //shouldLoad = true;
         } catch (IOException e) {
-            JLabel unableLoad = new JLabel("Unable to load file from destination.");
-            unableLoad.setFont(LABEL_FONT);
-            JOptionPane.showMessageDialog(frame, unableLoad);
+            showMessage("Unable to load file from destination.");
         }
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: mainPanel
+    //MODIFIES: this
+    //EFFECTS: Updates the mainPanel after an event click
     public void updateSession() {
         mainPanel.remove(sessionSidePanel);
         sessionSidePanel = new SessionSidePanel(this, mainPanel);
 
-        mainPanel.add(sessionSidePanel);
         mainPanel.add(sidePanel);
         mainPanel.add(sudokuGridPanel);
+        mainPanel.add(sessionSidePanel);
+
+        revalidate();
 
         createFrame();
     }
@@ -294,9 +299,7 @@ public class SudokuSolverGUI extends JFrame {
         }
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //EFFECTS: Checks if the user input is valid
     private boolean checkValidInput() {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
@@ -337,7 +340,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[0];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -351,7 +354,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[1];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -365,7 +368,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[2];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -379,7 +382,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[3];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -393,7 +396,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[4];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -407,7 +410,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[5];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -421,7 +424,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[6];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -435,7 +438,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[7];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -449,7 +452,7 @@ public class SudokuSolverGUI extends JFrame {
         JTextField[] rowTextField = TEXT_FIELDS[8];
         int[] row = new int[BOARD_SIZE];
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-            replaceEmptyFieldWithZero(rowTextField);
+            replaceEmptyFieldWithEmpty(rowTextField);
             int num = Integer.parseInt(rowTextField[columnIndex].getText());
             row[columnIndex] = num;
         }
@@ -458,7 +461,7 @@ public class SudokuSolverGUI extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: Replaces an empty textField with a 0 for the Sudoku Question Board
-    private void replaceEmptyFieldWithZero(JTextField[] rowTextField) {
+    private void replaceEmptyFieldWithEmpty(JTextField[] rowTextField) {
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
             String emptyField = "";
             JTextField field = rowTextField[columnIndex];

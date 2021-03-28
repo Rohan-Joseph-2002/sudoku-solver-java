@@ -9,12 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import static gui.SudokuSolverGUI.PANEL_STARTING_HEIGHT;
+import static gui.SessionSidePanel.DISPLAY_PANEL_HEIGHT;
+import static gui.SessionSidePanel.DISPLAY_PANEL_WIDTH;
 
 public class CurrentSessionDisplayPanel extends JPanel implements ActionListener {
-    private static final int DISPLAY_PANEL_WIDTH = 550;
-    private static final int DISPLAY_PANEL_HEIGHT = PANEL_STARTING_HEIGHT / 2 - 50;
-
     private static final String FONT_NAME = "Helvetica";
 
     private static final Color BUTTON_BG_COLOR = Color.LIGHT_GRAY;
@@ -25,14 +23,13 @@ public class CurrentSessionDisplayPanel extends JPanel implements ActionListener
 
     private SudokuSolverGUI mainFrame;
     private JPanel sidePanel;
-    //private JScrollPane currentSessionPane;
     private JPanel currentSessionPane;
     private SudokuAnswerBoards currentListOfAnswerBoards;
     private final ArrayList<JButton> listOfButtons;
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: mainFrame
+    //MODIFIES: this
+    //EFFECTS: Displays all current session boards in a panel
     public CurrentSessionDisplayPanel(SudokuSolverGUI mainFrame, JPanel sidePanel) {
         this.mainFrame = mainFrame;
         this.sidePanel = sidePanel;
@@ -43,16 +40,19 @@ public class CurrentSessionDisplayPanel extends JPanel implements ActionListener
         setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
         currentSessionPane = new JPanel();
-        currentSessionPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
         displayCurrentSession();
 
-        add(currentSessionPane);
+        JScrollPane currentSessionScrollPane = new JScrollPane(currentSessionPane,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        currentSessionScrollPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT - 75));
+
+        add(currentSessionScrollPane);
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Displays title
     public void displayCurrentSession() {
         JLabel title = new JLabel("- - - Current Session - - -");
         title.setFont(LABEL_FONT);
@@ -61,9 +61,9 @@ public class CurrentSessionDisplayPanel extends JPanel implements ActionListener
         displayCurrentBoard();
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Displays all current boards with clickable buttons that, on click,
+    //         displays the board.
     private void displayCurrentBoard() {
         JPanel viewPanel = new JPanel();
         try {
@@ -74,9 +74,8 @@ public class CurrentSessionDisplayPanel extends JPanel implements ActionListener
                 listOfButtons.add(button);
             }
             viewPanel.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
-            viewPanel.setAutoscrolls(true);
             for (JButton button : listOfButtons) {
-                button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 50));
+                button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 75));
                 viewPanel.add(button);
             }
             currentSessionPane.add(viewPanel);

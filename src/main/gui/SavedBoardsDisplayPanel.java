@@ -11,11 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static gui.SudokuSolverGUI.PANEL_STARTING_HEIGHT;
+import static gui.SessionSidePanel.DISPLAY_PANEL_HEIGHT;
+import static gui.SessionSidePanel.DISPLAY_PANEL_WIDTH;
 
 public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
-    private static final int DISPLAY_PANEL_WIDTH = 550;
-    private static final int DISPLAY_PANEL_HEIGHT = PANEL_STARTING_HEIGHT / 2 - 50;
 
     private static final String FONT_NAME = "Helvetica";
     private static final String JSON_STORAGE = "./data/answers.json";
@@ -29,15 +28,16 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
     private final SudokuSolverGUI mainFrame;
     private final JPanel sidePanel;
     private final JPanel savedBoardsPane;
-    //private boolean shouldLoad;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private final ArrayList<JButton> listOfButtons;
     private final JsonReader jsonReader;
 
+    //REQUIRES: mainFrame
+    //MODIFIES: this
+    //EFFECTS: Displays all saved boards in a panel
     public SavedBoardsDisplayPanel(SudokuSolverGUI mainFrame, JPanel sidePanel) {
         this.mainFrame = mainFrame;
         this.sidePanel = sidePanel;
-        //this.shouldLoad = mainFrame.shouldLoad;
         this.savedListOfAnswerBoards = new SudokuAnswerBoards("Sudoku Solver Answers - GUI");
         this.listOfButtons = new ArrayList<>();
         this.jsonReader = new JsonReader(JSON_STORAGE);
@@ -46,29 +46,30 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
         savedBoardsPane = new JPanel();
-        savedBoardsPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
         displaySavedBoards();
 
-        add(savedBoardsPane);
+        JScrollPane savedBoardsScrollPane = new JScrollPane(savedBoardsPane,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        savedBoardsScrollPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT - 75));
+
+        add(savedBoardsScrollPane);
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Displays title
     public void displaySavedBoards() {
         JLabel title = new JLabel("- - - Saved Boards - - -");
         title.setFont(LABEL_FONT);
         title.setForeground(Color.WHITE);
         add(title);
-        //if (shouldLoad) {
         displaySavedBoard();
-        //}
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: Displays all saved boards - from file - with clickable buttons that, on click,
+    //         displays the saved board.
     private void displaySavedBoard() {
         JPanel viewPanel = new JPanel();
         try {
@@ -80,9 +81,8 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
                 listOfButtons.add(button);
             }
             viewPanel.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
-            viewPanel.setAutoscrolls(true);
             for (JButton button : listOfButtons) {
-                button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 50));
+                button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 75));
                 viewPanel.add(button);
             }
             savedBoardsPane.add(viewPanel);
