@@ -215,24 +215,20 @@ public class SudokuSolverGUI extends JFrame {
         return listOfSavedBoards;
     }
 
+    //EFFECTS: Returns true if a given board is already there in the current session
     private boolean duplicateInCurrentSession(int[][] answerBoard, List<int[][]> listOfCurrentBoards) {
-        boolean duplicate = false;
-        for (int[][] board : listOfCurrentBoards) {
-            for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-                int[] boardRow = board[rowIndex];
-                int[] answerBoardRow = answerBoard[rowIndex];
-                if (Arrays.equals(boardRow, answerBoardRow)) {
-                    duplicate = true;
-                    break;
-                }
-            }
-        }
-        return duplicate;
+        return checkDuplication(answerBoard, listOfCurrentBoards);
     }
 
+    //EFFECTS: Returns true if a given board has already been saved to file.
     private boolean duplicateInSaved(int[][] answerBoard, List<int[][]> listOfSavedBoards) {
+        return checkDuplication(answerBoard, listOfSavedBoards);
+    }
+
+    //EFFECTS: Returns true if a given board is already present in a given list of boards
+    private boolean checkDuplication(int[][] answerBoard, List<int[][]> listOfCurrentBoards) {
         boolean duplicate = false;
-        for (int[][] board : listOfSavedBoards) {
+        for (int[][] board : listOfCurrentBoards) {
             for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
                 int[] boardRow = board[rowIndex];
                 int[] answerBoardRow = answerBoard[rowIndex];
