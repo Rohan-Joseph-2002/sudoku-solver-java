@@ -1,5 +1,6 @@
 package model;
 
+//Inteface - SolveBoard
 public interface SolveBoard {
 
     //REQUIRES: Board

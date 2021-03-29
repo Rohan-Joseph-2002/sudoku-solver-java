@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import static gui.SudokuSolverGUI.*;
 
+//Class - SidePanel
 public class SidePanel extends JPanel implements ActionListener {
     private static final int SIDE_PANEL_WIDTH = 100;
 
@@ -58,6 +59,7 @@ public class SidePanel extends JPanel implements ActionListener {
                 mainFrame.clearDisplayGrid();
                 break;
             case "solve":
+                mainFrame.playPopSound();
                 mainFrame.solveSudokuQuestionBoard();
                 break;
             case "save":

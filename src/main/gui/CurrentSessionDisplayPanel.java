@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import static gui.SessionSidePanel.DISPLAY_PANEL_HEIGHT;
 import static gui.SessionSidePanel.DISPLAY_PANEL_WIDTH;
 
+//Class - CurrentSessionDisplayPanel
 public class CurrentSessionDisplayPanel extends JPanel implements ActionListener {
     private static final String FONT_NAME = "Helvetica";
 

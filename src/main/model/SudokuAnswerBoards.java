@@ -7,6 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
+//Class - SudokuAnswerBoards
 public class SudokuAnswerBoards implements Writable {
     private String name;
     private List<SudokuAnswerBoard> sudokuAnswerBoards;

@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+//Class - SudokuSolverGUI
 public class SudokuSolverGUI extends JFrame {
     protected static final int PANEL_STARTING_HEIGHT = 1750;
     protected static final int PANEL_STARTING_WIDTH = 2550;
@@ -44,7 +46,7 @@ public class SudokuSolverGUI extends JFrame {
     protected final JsonReader jsonReader;
 
     private int[][] answerSudokuBoard;
-    private SudokuSolver9By9 solve9By9;
+    private int[][] questionSudokuBoard;
     protected SudokuAnswerBoards currentListOfAnswerBoards;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private SessionSidePanel sessionSidePanel;
@@ -111,17 +113,24 @@ public class SudokuSolverGUI extends JFrame {
     //         puts it through the Sudoku9by9Solver.
     //         If solvable is true, displays the solved Sudoku Board, or a
     //         JOptionPane indicating that the board cannot be solved.
-    public void solveSudokuQuestionBoard() {
+    protected void solveSudokuQuestionBoard() {
         if (!checkValidInput()) {
             showMessage("Invalid User Input. All values must be numbers  between 1 and 9");
         } else {
-            int[][] questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
+            questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
             getSudokuQuestionBoard(questionSudokuBoard);
-            solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+            SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
             boolean solvable = solve9By9.solveBoard(questionSudokuBoard);
             if (solvable) {
-                sudokuAnswerBoardToGUI();
+                sudokuAnswerBoardToGUI(solve9By9);
             } else {
+                for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+                    for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
+                        if (TEXT_FIELDS[rowIndex][columnIndex].getText().equals("0")) {
+                            TEXT_FIELDS[rowIndex][columnIndex].setText("");
+                        }
+                    }
+                }
                 showMessage("Unfortunately, a solution doesn't exist :(");
             }
         }
@@ -131,7 +140,7 @@ public class SudokuSolverGUI extends JFrame {
     //EFFECTS: Gets the solved Sudoku Answer Board and outputs it on the Sudoku Grid Panel
     //         Prompts the user whether they want to add the answer board to the current session
     //         or not.
-    private void sudokuAnswerBoardToGUI() {
+    private void sudokuAnswerBoardToGUI(SudokuSolver9By9 solve9By9) {
         boolean shouldAdd = false;
         answerSudokuBoard = solve9By9.getSolvedBoard();
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
@@ -166,12 +175,74 @@ public class SudokuSolverGUI extends JFrame {
             if (keyList.contains(boardName)) {
                 showMessage("This name is being used. Please try again!");
             } else {
-                SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(boardName, answerSudokuBoard);
-                currentListOfAnswerBoards.add(sudokuAnswerBoard);
-                updateSession();
+                isAlreadySavedBoard(boardName);
                 sameName = false;
             }
         }
+    }
+
+    //MODIFIES: this
+    //EFFECTS:
+    private void isAlreadySavedBoard(String boardName) {
+        List<int[][]> listOfCurrentBoards = returnCurrentSessionBoardList();
+        List<int[][]> listOfSavedBoards = returnSavedBoardList();
+        if (duplicateInCurrentSession(answerSudokuBoard, listOfCurrentBoards)) {
+            showMessage("This board has already been added to the current session.");
+        } else if (duplicateInSaved(answerSudokuBoard, listOfSavedBoards)) {
+            showMessage("This board has already been saved to file.");
+        } else {
+            SudokuAnswerBoard sudokuAnswerBoard = new SudokuAnswerBoard(boardName, answerSudokuBoard);
+            currentListOfAnswerBoards.add(sudokuAnswerBoard);
+            updateSession();
+        }
+    }
+
+    //EFFECTS: Returns all the answer boards in the current session
+    private List<int[][]> returnCurrentSessionBoardList() {
+        List<int[][]> listOfCurrentBoards = new ArrayList<>();
+        for (SudokuAnswerBoard board : currentListOfAnswerBoards.getListOfAnswerBoards()) {
+            listOfCurrentBoards.add(board.returnAnswerBoard());
+        }
+        return listOfCurrentBoards;
+    }
+
+    //EFFECTS: Returns all the saved boards from file
+    private List<int[][]> returnSavedBoardList() {
+        List<int[][]> listOfSavedBoards = new ArrayList<>();
+        for (SudokuAnswerBoard board : savedListOfAnswerBoards.getListOfAnswerBoards()) {
+            listOfSavedBoards.add(board.returnAnswerBoard());
+        }
+        return listOfSavedBoards;
+    }
+
+    private boolean duplicateInCurrentSession(int[][] answerBoard, List<int[][]> listOfCurrentBoards) {
+        boolean duplicate = false;
+        for (int[][] board : listOfCurrentBoards) {
+            for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+                int[] boardRow = board[rowIndex];
+                int[] answerBoardRow = answerBoard[rowIndex];
+                if (Arrays.equals(boardRow, answerBoardRow)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+        }
+        return duplicate;
+    }
+
+    private boolean duplicateInSaved(int[][] answerBoard, List<int[][]> listOfSavedBoards) {
+        boolean duplicate = false;
+        for (int[][] board : listOfSavedBoards) {
+            for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+                int[] boardRow = board[rowIndex];
+                int[] answerBoardRow = answerBoard[rowIndex];
+                if (Arrays.equals(boardRow, answerBoardRow)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+        }
+        return duplicate;
     }
 
     //MODIFIES: this
@@ -203,7 +274,7 @@ public class SudokuSolverGUI extends JFrame {
     }
 
     //EFFECTS: Plays pop sound
-    private void playPopSound() {
+    protected void playPopSound() {
         String popSound = "./data/pop-sound.wav";
         try {
             File path = new File(popSound);
@@ -218,7 +289,7 @@ public class SudokuSolverGUI extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: Clears ever JTextField in the Sudoku Grid Panel
-    public void clearDisplayGrid() {
+    protected void clearDisplayGrid() {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                 TEXT_FIELDS[rowIndex][columnIndex].setText("");
@@ -229,7 +300,7 @@ public class SudokuSolverGUI extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: Saves the SudokuAnswerBoards to File
-    public void saveAnswerBoards() {
+    protected void saveAnswerBoards() {
         for (SudokuAnswerBoard board : currentListOfAnswerBoards.getListOfAnswerBoards()) {
             savedListOfAnswerBoards.add(board);
         }

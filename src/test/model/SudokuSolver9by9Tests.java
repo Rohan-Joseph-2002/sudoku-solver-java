@@ -160,9 +160,8 @@ public class SudokuSolver9by9Tests {
 
     @Test
     public void testGetSolvedBoard() {
-        int[][] answerBoard;
         testBoardSolvable.solveBoard(board4);
-        answerBoard = testBoardSolvable.getSolvedBoard();
+        int[][] answerBoard = testBoardSolvable.getSolvedBoard();
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int column = 0; column < BOARD_SIZE; column++) {
                 assertEquals(solution[row][column], answerBoard[row][column]);

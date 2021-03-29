@@ -3,6 +3,7 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+//Class - SudokuAnswerBoard
 public class SudokuAnswerBoard implements Writable {
     private String name;
     private int[][] solvedBoard;

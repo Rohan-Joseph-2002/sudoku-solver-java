@@ -6,6 +6,7 @@ import java.awt.*;
 import static gui.SudokuSolverGUI.PANEL_STARTING_HEIGHT;
 import static gui.SudokuSolverGUI.PANEL_STARTING_WIDTH;
 
+//Class - SessionSidePanel
 public class SessionSidePanel extends JPanel {
     protected static final int DISPLAY_PANEL_WIDTH = PANEL_STARTING_WIDTH / 5;
     protected static final int DISPLAY_PANEL_HEIGHT = PANEL_STARTING_HEIGHT / 2;
