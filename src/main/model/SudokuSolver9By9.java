@@ -27,19 +27,8 @@ public class SudokuSolver9By9 implements SolveBoard {
     //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
     @Override
     public boolean solveBoard(int[][] sudokuBoard) {
-//        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-//            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-//                if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
-//                    //NOTE: Tries every possible number to check if it can be assigned here
-//                    return getAssignment(sudokuBoard, rowIndex, columnIndex);
-//                }
-//            }
-//        }
-//        this.solvedBoard = sudokuBoard;
-//        return true;
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                int num = sudokuBoard[rowIndex][columnIndex];
                 if (sudokuBoard[rowIndex][columnIndex] == UNASSIGNED) {
                     //NOTE: Tries every possible number to check if it can be assigned here
                     return getAssignment(sudokuBoard, rowIndex, columnIndex);
