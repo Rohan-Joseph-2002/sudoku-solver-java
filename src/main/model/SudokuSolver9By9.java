@@ -1,7 +1,7 @@
 package model;
 
 //Class - SudokuSolver9By9
-public class SudokuSolver9By9 implements SolveBoard {
+public class SudokuSolver9By9 {
 
     public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with a 0
     public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
@@ -25,7 +25,6 @@ public class SudokuSolver9By9 implements SolveBoard {
 
     //MODIFIES: this
     //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
-    @Override
     public boolean solveBoard(int[][] sudokuBoard) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
@@ -42,7 +41,6 @@ public class SudokuSolver9By9 implements SolveBoard {
     //REQUIRES: rowIndex and columnIndex must be one of [0, 8]
     //MODIFIES: this
     //EFFECTS: Checks to see if the number can be assigned, assigns if true, or does nothing.
-    @Override
     public boolean getAssignment(int[][] sudokuBoard, int rowIndex, int columnIndex) {
         for (int num = 1; num <= BOARD_SIZE; num++) {
             if (canAddNum(sudokuBoard, rowIndex, columnIndex, num)) {
@@ -61,14 +59,12 @@ public class SudokuSolver9By9 implements SolveBoard {
     }
 
     //EFFECTS: Gets solved sudoku board
-    @Override
     public int[][] getSolvedBoard() {
         return this.solvedBoard;
     }
 
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false
-    @Override
     public boolean canAddNum(int[][] sudokuBoard, int rowIndex, int columnIndex, int num) {
         int subRow = rowIndex - rowIndex % 3;          //NOTE: constrains iterating rows within a 3 by 3 subgrid
         int subColumn = columnIndex - columnIndex % 3; //NOTE: constrains iterating columns within a 3 by 3 subgrid
@@ -80,7 +76,6 @@ public class SudokuSolver9By9 implements SolveBoard {
 
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same row, else returns false
-    @Override
     public boolean inSameRow(int[][] sudokuBoard, int rowIndex, int num) {
         for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
             if (sudokuBoard[rowIndex][columnIndex] == num) {
@@ -92,7 +87,6 @@ public class SudokuSolver9By9 implements SolveBoard {
 
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same column, else returns false
-    @Override
     public boolean inSameColumn(int[][] sudokuBoard, int columnIndex, int num) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             if (sudokuBoard[rowIndex][columnIndex] == num) {
@@ -104,7 +98,6 @@ public class SudokuSolver9By9 implements SolveBoard {
 
     //REQUIRES: Given number must be in between [1, 9]
     //EFFECTS: Returns true if a possible number is in the same subgrid, else returns false
-    @Override
     public boolean inSameSubGrid(int[][] sudokuBoard, int rowIndex, int columnIndex, int num) {
         for (int subRowIndex = 0; subRowIndex < 3; subRowIndex++) {
             for (int subColumnIndex = 0; subColumnIndex < 3; subColumnIndex++) {
