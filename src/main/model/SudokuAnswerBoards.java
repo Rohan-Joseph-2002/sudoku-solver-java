@@ -50,7 +50,7 @@ public class SudokuAnswerBoards implements Writable {
     }
 
     //SOURCE: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-    //EFFECTS:
+    //EFFECTS: Turns a SudokuAnswerBoard to a JSONObject
     private JSONArray answerBoardToJson() {
         JSONArray jsonArray = new JSONArray();
 
