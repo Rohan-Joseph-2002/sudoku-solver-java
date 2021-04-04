@@ -1,5 +1,6 @@
 package gui;
 
+import exceptions.InvalidBoardException;
 import model.SudokuAnswerBoard;
 import model.SudokuAnswerBoards;
 import model.SudokuSolver9By9;
@@ -46,7 +47,6 @@ public class SudokuSolverGUI extends JFrame {
     protected final JsonReader jsonReader;
 
     private int[][] answerSudokuBoard;
-    private int[][] questionSudokuBoard;
     protected SudokuAnswerBoards currentListOfAnswerBoards;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private SessionSidePanel sessionSidePanel;
@@ -114,24 +114,30 @@ public class SudokuSolverGUI extends JFrame {
     //         If solvable is true, displays the solved Sudoku Board, or a
     //         JOptionPane indicating that the board cannot be solved.
     protected void solveSudokuQuestionBoard() {
-        if (!checkValidInput()) {
-            showMessage("Invalid User Input. All values must be numbers  between 1 and 9");
-        } else {
-            questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
-            getSudokuQuestionBoard(questionSudokuBoard);
-            SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+        int[][] questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
+        getSudokuQuestionBoard(questionSudokuBoard);
+        SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+        try {
             boolean solvable = solve9By9.solveBoard(questionSudokuBoard);
             if (solvable) {
                 sudokuAnswerBoardToGUI(solve9By9);
             } else {
-                for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-                    for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                        if (TEXT_FIELDS[rowIndex][columnIndex].getText().equals("0")) {
-                            TEXT_FIELDS[rowIndex][columnIndex].setText("");
-                        }
-                    }
-                }
+                setZeroToEmptyString();
                 showMessage("Unfortunately, a solution doesn't exist :(");
+            }
+        } catch (InvalidBoardException e) {
+            setZeroToEmptyString();
+            showMessage("Invalid Sudoku Board!");
+        }
+    }
+
+    //EFFECTS: For every 0 in a 9 by 9 matrix, set the associated JTextField to an empty string.
+    private void setZeroToEmptyString() {
+        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
+                if (TEXT_FIELDS[rowIndex][columnIndex].getText().equals("0")) {
+                    TEXT_FIELDS[rowIndex][columnIndex].setText("");
+                }
             }
         }
     }
@@ -357,27 +363,6 @@ public class SudokuSolverGUI extends JFrame {
                 TEXT_FIELDS[rowIndex][columnIndex].setText(String.valueOf(answerBoard[rowIndex][columnIndex]));
             }
         }
-    }
-
-    //EFFECTS: Checks if the user input is valid
-    private boolean checkValidInput() {
-        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                String entry = TEXT_FIELDS[rowIndex][columnIndex].getText();
-                boolean invalidEntry = entry.equals("");
-                if (!invalidEntry) {
-                    try {
-                        int num = Integer.parseInt(entry);
-                        if (num < 1 || num > BOARD_SIZE) {
-                            return false;
-                        }
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     //EFFECTS: Returns a textField as a 9 by 9 matrix

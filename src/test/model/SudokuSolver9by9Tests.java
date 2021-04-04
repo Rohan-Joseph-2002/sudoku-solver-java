@@ -11,15 +11,15 @@ public class SudokuSolver9by9Tests {
 
     private SudokuSolver9By9 testBoard1;
     private final int[][] board1 = {
-            {0,3,4,6,7,8,9,1,2},
-            {6,7,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,5,6,7},
-            {8,5,9,7,6,1,4,2,3},
-            {4,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+            {0, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 6, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
     private int testRowBoard1;
     private int testColumnBoard1;
@@ -28,15 +28,15 @@ public class SudokuSolver9by9Tests {
 
     private SudokuSolver9By9 testBoard2;
     private final int[][] board2 = {
-            {5,3,4,6,7,8,9,1,2},
-            {6,7,2,1,9,5,3,0,8},
-            {1,9,8,3,4,2,5,6,7},
-            {8,5,9,7,0,1,4,2,3},
-            {4,2,6,8,5,3,7,9,1},
-            {7,1,3,0,0,4,8,5,6},
-            {9,6,1,5,3,0,2,8,4},
-            {2,0,7,4,1,0,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+            {5, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 0, 8},
+            {1, 9, 8, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 0, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 0, 0, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 0, 2, 8, 4},
+            {2, 0, 7, 4, 1, 0, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
     private int testRowBoard2;
     private int testColumnBoard2;
@@ -45,40 +45,53 @@ public class SudokuSolver9by9Tests {
 
     private SudokuSolver9By9 testBoardNotSolvable;
     private final int[][] board3 = {
-            {2,3,0,0,7,0,0,0,0},
-            {6,0,0,1,9,5,0,0,0},
-            {0,9,8,0,0,0,0,6,0},
-            {8,0,0,0,6,0,0,0,3},
-            {4,0,0,8,0,3,0,0,1},
-            {7,0,0,0,2,0,0,0,6},
-            {0,6,0,0,0,0,2,8,0},
-            {0,0,0,4,1,9,0,0,5},
-            {0,0,0,0,8,0,0,7,9}
+            {2, 3, 0, 0, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
 
     private SudokuSolver9By9 testBoardSolvable;
     private final int[][] board4 = {
-            {5,3,0,0,7,0,0,0,0},
-            {6,0,0,1,9,5,0,0,0},
-            {0,9,8,0,0,0,0,6,0},
-            {8,0,0,0,6,0,0,0,3},
-            {4,0,0,8,0,3,0,0,1},
-            {7,0,0,0,2,0,0,0,6},
-            {0,6,0,0,0,0,2,8,0},
-            {0,0,0,4,1,9,0,0,5},
-            {0,0,0,0,8,0,0,7,9}
+            {5, 3, 0, 0, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+    };
+
+    private SudokuSolver9By9 testExceptionBoard;
+    private final int[][] board5 = {
+            {99, 3, 0, 98, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 99, 6, 0, 0, 75, 3},
+            {4, 0, 0, 8, 0, -1, 0, 0, 1},
+            {68, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 100, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
 
     private final int[][] solution = {
-            {5,3,4,6,7,8,9,1,2},
-            {6,7,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,5,6,7},
-            {8,5,9,7,6,1,4,2,3},
-            {4,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+            {5, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 6, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
 
     @BeforeEach
@@ -98,74 +111,190 @@ public class SudokuSolver9by9Tests {
         testBoardNotSolvable = new SudokuSolver9By9(board3);
 
         testBoardSolvable = new SudokuSolver9By9(board4);
+
+        testExceptionBoard = new SudokuSolver9By9(board5);
     }
 
     @Test
     public void testNotInSameRow() {
-        assertFalse(testBoard1.inSameRow(board1, testRowBoard1,5));
-        assertFalse(testBoard2.inSameRow(board2, testRowBoard2, 9));
+        try {
+            assertFalse(testBoard1.inSameRow(board1, testRowBoard1, 5));
+            assertFalse(testBoard2.inSameRow(board2, testRowBoard2, 9));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
     }
 
     @Test
     public void testInSameRow() {
-        assertTrue(testBoard1.inSameRow(board1, testRowBoard1, 2));
-        assertTrue(testBoard2.inSameRow(board2, testRowBoard2, 7));
+        try {
+            assertTrue(testBoard1.inSameRow(board1, testRowBoard1, 2));
+            assertTrue(testBoard2.inSameRow(board2, testRowBoard2, 7));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testInSameRowExceptionThrown() {
+        try {
+            testBoard1.inSameRow(board1, testRowBoard1, 11);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
+        try {
+            testBoard1.inSameRow(board1, testRowBoard2, -21);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
     }
 
     @Test
     public void testNotInSameColumn() {
-        assertFalse(testBoard1.inSameColumn(board1, testColumnBoard1, 5));
-        assertFalse(testBoard2.inSameColumn(board2, testColumnBoard2, 9));
+        try {
+            assertFalse(testBoard1.inSameColumn(board1, testColumnBoard1, 5));
+            assertFalse(testBoard2.inSameColumn(board2, testColumnBoard2, 9));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
     }
 
     @Test
     public void testInSameColumn() {
-        assertTrue(testBoard1.inSameColumn(board1, testColumnBoard1, 3));
-        assertTrue(testBoard2.inSameColumn(board2, testColumnBoard2, 8));
+        try {
+            assertTrue(testBoard1.inSameColumn(board1, testColumnBoard1, 3));
+            assertTrue(testBoard2.inSameColumn(board2, testColumnBoard2, 8));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testInSameColumnExceptionThrown() {
+        try {
+            testBoard1.inSameRow(board1, testColumnBoard1, 11);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
+        try {
+            testBoard1.inSameRow(board1, testColumnBoard2, -21);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
     }
 
     @Test
     public void testNotInSameSubGrid() {
-        assertFalse(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 5));
-        assertFalse(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 9));
+        try {
+            assertFalse(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 5));
+            assertFalse(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 9));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
     }
 
     @Test
     public void testInSameSubGrid() {
-        assertTrue(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 7));
-        assertTrue(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 6));
+        try {
+            assertTrue(testBoard1.inSameSubGrid(board1, testSubGridRowBoard1, testSubGridColumnBoard1, 7));
+            assertTrue(testBoard2.inSameSubGrid(board2, testSubGridRowBoard2, testSubGridColumnBoard2, 6));
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testInSameSubGridExceptionThrown() {
+        try {
+            testBoard1.inSameRow(board1, testSubGridColumnBoard1, 11);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
+        try {
+            testBoard1.inSameRow(board1, testSubGridColumnBoard2, -21);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
     }
 
     @Test
     public void testCanNotAddNum() {
-        assertFalse(testBoard1.canAddNum(board1, 0, 0, 7));
-        assertFalse(testBoard2.canAddNum(board2, 7, 1, 6));
+        try {
+            assertFalse(testBoard1.canAddNum(board1, 0, 0, 7));
+            assertFalse(testBoard2.canAddNum(board2, 7, 1, 6));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
+        try {
+            testBoard1.canAddNum(board1, 0, 0, 100);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
+        try {
+            testBoard2.canAddNum(board2, 7, 1, -10);
+            fail("Exception should be thrown");
+        } catch (Exception e) {
+            //pass
+        }
     }
 
     @Test
     public void testCanAddNum() {
-        assertTrue(testBoard1.canAddNum(board1, 0, 0, 5));
-        assertTrue(testBoard2.canAddNum(board2, 7, 1, 8));
+        try {
+            assertTrue(testBoard1.canAddNum(board1, 0, 0, 5));
+            assertTrue(testBoard2.canAddNum(board2, 7, 1, 8));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
     }
 
     @Test
     public void testSolveBoardNotSolvable() {
-        assertFalse(testBoardNotSolvable.solveBoard(board3));
+        try {
+            assertFalse(testBoardNotSolvable.solveBoard(board3));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
     }
 
     @Test
     public void testSolveBoardSolvable() {
-        assertTrue(testBoardSolvable.solveBoard(board4));
+        try {
+            assertTrue(testBoardSolvable.solveBoard(board4));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
+    }
+
+    @Test
+    public void testSolveBoardExceptionThrown() {
+        try {
+            testBoardSolvable.solveBoard(board5);
+            fail("Exception should not be thrown");
+        } catch (Exception e) {
+            //pass
+        }
     }
 
     @Test
     public void testGetSolvedBoard() {
-        testBoardSolvable.solveBoard(board4);
-        int[][] answerBoard = testBoardSolvable.getSolvedBoard();
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int column = 0; column < BOARD_SIZE; column++) {
-                assertEquals(solution[row][column], answerBoard[row][column]);
+        try {
+            testBoardSolvable.solveBoard(board4);
+            int[][] answerBoard = testBoardSolvable.getSolvedBoard();
+            for (int row = 0; row < BOARD_SIZE; row++) {
+                for (int column = 0; column < BOARD_SIZE; column++) {
+                    assertEquals(solution[row][column], answerBoard[row][column]);
+                }
             }
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
         }
     }
 

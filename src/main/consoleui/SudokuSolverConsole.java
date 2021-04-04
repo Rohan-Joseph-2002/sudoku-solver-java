@@ -1,5 +1,6 @@
 package consoleui;
 
+import exceptions.InvalidBoardException;
 import model.SudokuAnswerBoard;
 import model.SudokuAnswerBoards;
 import model.SudokuSolver9By9;
@@ -114,10 +115,14 @@ public class SudokuSolverConsole {
         SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
         System.out.print("\n Here is your question board: \n");
         displayQuestionBoard(questionSudokuBoard);
-        if (solve9By9.solveBoard(questionSudokuBoard)) {
-            getSolvedSudokuBoard(solve9By9);
-        } else {
-            System.out.print("\n Unfortunately, a solution doesn't exist :( \n\n");
+        try {
+            if (solve9By9.solveBoard(questionSudokuBoard)) {
+                getSolvedSudokuBoard(solve9By9);
+            } else {
+                System.out.print("\n Unfortunately, a solution doesn't exist :( \n\n");
+            }
+        } catch (InvalidBoardException e) {
+            System.out.println("\n \"Invalid Sudoku Board!\" \n");
         }
     }
 

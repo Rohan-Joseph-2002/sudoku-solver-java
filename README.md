@@ -40,3 +40,16 @@ if a given name has already been used.
 10. As a user, I want to be notified if a given Sudoku question board has already
 been answered, and be directed to the name of the saved file that contains
 the SudokuAnswerBoard.
+
+##Phase 4: Task 2
+**Task Completed:** "Test and design a class in your model package that is robust"
+
+**Class (in the model Package):** SudokuSolver9By9
+
+**Methods that achieve this:**
+- solveBoard(int[][] board) *=> on line 29*
+- getAssignment(int[][] board, int r, int c) *=> on line 69*
+- canAddNum(int[][] board, int rowIndex, int columnIndex, int num) *=> on line 92*
+- inSameRow(int[][] board, int rowIndex, int num) *=> on line 102*
+- inSameColumn(int[][] board, int columnIndex, int num) *=> on line 116*
+- inSameSubGrid(int[][] board, int rowIndex, int columnIndex, int num) *=> on line 130*
