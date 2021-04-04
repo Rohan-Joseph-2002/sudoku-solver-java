@@ -41,7 +41,7 @@ if a given name has already been used.
 been answered, and be directed to the name of the saved file that contains
 the SudokuAnswerBoard.
 
-##Phase 4: Task 2
+## Phase 4: Task 2
 **Task Completed:** "Test and design a class in your model package that is robust"
 
 **Class (in the model Package):** SudokuSolver9By9

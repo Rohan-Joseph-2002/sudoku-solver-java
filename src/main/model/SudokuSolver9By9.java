@@ -25,7 +25,8 @@ public class SudokuSolver9By9 {
     }
 
     //MODIFIES: this
-    //EFFECTS: Returns true if a valid solution to a question sudoku board is found, else returns false.
+    //EFFECTS: If !validSudokuBoard(board) throw new InvalidBoardException, else
+    // Returns true if a valid solution to a question sudoku board is found, else returns false.
     public boolean solveBoard(int[][] board) throws InvalidBoardException {
         if (validSudokuBoard(board)) {
             for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
@@ -53,7 +54,6 @@ public class SudokuSolver9By9 {
     public boolean validSudokuBoard(int[][] board) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                int[] row = board[rowIndex];
                 int boardNum = board[rowIndex][columnIndex];
                 //boardNum < 0, because 0 is used to represent an empty space
                 if (boardNum < 0 || boardNum > 9) {
@@ -98,7 +98,8 @@ public class SudokuSolver9By9 {
                 && !inSameSubGrid(board, subRow, subColumn, num);
     }
 
-    //EFFECTS: Returns true if a possible number is in the same row, else returns false
+    //EFFECTS: If num < 1 or num > 9, throw new NumberBoundsException, else
+    // Returns true if a possible number is in the same row, else returns false
     public boolean inSameRow(int[][] board, int rowIndex, int num) throws NumberBoundsException {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
@@ -112,7 +113,8 @@ public class SudokuSolver9By9 {
         }
     }
 
-    //EFFECTS: Returns true if a possible number is in the same column, else returns false
+    //EFFECTS: If num < 1 or num > 9, throw new NumberBoundsException, else
+    // Returns true if a possible number is in the same column, else returns false
     public boolean inSameColumn(int[][] board, int columnIndex, int num) throws NumberBoundsException {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
@@ -126,7 +128,8 @@ public class SudokuSolver9By9 {
         }
     }
 
-    //EFFECTS: Returns true if a possible number is in the same subgrid, else returns false
+    //EFFECTS: If num < 1 or num > 9, throw new NumberBoundsException, else
+    // Returns true if a possible number is in the same subgrid, else returns false
     public boolean inSameSubGrid(int[][] board, int rowIndex, int columnIndex, int num) throws NumberBoundsException {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
