@@ -73,7 +73,7 @@ public class SudokuSolver9by9Tests {
     private final int[][] board5 = {
             {99, 3, 0, 98, 7, 0, 0, 0, 0},
             {6, 0, 0, 1, 9, 5, 0, 0, 0},
-            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {0, 9, 8, 0, 0, 10, 0, 6, 0},
             {8, 0, 0, 99, 6, 0, 0, 75, 3},
             {4, 0, 0, 8, 0, -1, 0, 0, 1},
             {68, 0, 0, 0, 2, 0, 0, 0, 6},
@@ -241,6 +241,17 @@ public class SudokuSolver9by9Tests {
         } catch (Exception e) {
             fail("Exception should not be thrown");
         }
+    }
+
+    @Test
+    public void testValidSudokuBoard() {
+        assertTrue(testBoardNotSolvable.validSudokuBoard(board3));
+        assertTrue(testBoardSolvable.validSudokuBoard(board4));
+    }
+
+    @Test
+    public void testValidSudokuBoardNotValid() {
+        assertFalse(testExceptionBoard.validSudokuBoard(board5));
     }
 
     @Test

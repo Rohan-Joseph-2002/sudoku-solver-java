@@ -47,7 +47,7 @@ public class SudokuSolver9By9 {
     }
 
     //EFFECTS: Returns true if a given sudoku board is valid. Else returns false.
-    private boolean validSudokuBoard(int[][] board) {
+    public boolean validSudokuBoard(int[][] board) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                 int boardNum = board[rowIndex][columnIndex];
