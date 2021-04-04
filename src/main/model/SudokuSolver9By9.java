@@ -9,7 +9,7 @@ public class SudokuSolver9By9 {
     public static final int UNASSIGNED = 0;  //Unassigned numbers are represented with a 0
     public static final int BOARD_SIZE = 9;  //Length of the sudoku board's rows and columns
 
-    private int[][] solvedBoard;
+    private int[][] sudokuBoard;
 
     //MODIFIES: this
     //EFFECTS: Creates a 9 by 9 Matrix
@@ -27,31 +27,27 @@ public class SudokuSolver9By9 {
     //MODIFIES: this
     //EFFECTS: If !validSudokuBoard(board) throw new InvalidBoardException, else
     // Returns true if a valid solution to a question sudoku board is found, else returns false.
-    public boolean solveBoard(int[][] board) throws InvalidBoardException {
+    public boolean solveBoard(int[][] board) throws InvalidBoardException, NumberBoundsException {
         if (validSudokuBoard(board)) {
             for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
                 for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                     int boardNum = board[rowIndex][columnIndex];
                     if (boardNum == UNASSIGNED) {
                         //NOTE: Tries every possible number to check if it can be assigned here
-                        try {
-                            return getAssignment(board, rowIndex, columnIndex);
-                        } catch (NumberBoundsException e) {
-                            return false;
-                        }
+                        return getAssignment(board, rowIndex, columnIndex);
                     }
                 }
             }
-            this.solvedBoard = board;
+            this.sudokuBoard = board;
             return true;
         } else {
-            this.solvedBoard = board;
+            this.sudokuBoard = board;
             throw new InvalidBoardException();
         }
     }
 
     //EFFECTS: Returns true if a given sudoku board is valid. Else returns false.
-    public boolean validSudokuBoard(int[][] board) {
+    private boolean validSudokuBoard(int[][] board) {
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                 int boardNum = board[rowIndex][columnIndex];
@@ -66,7 +62,7 @@ public class SudokuSolver9By9 {
 
     //MODIFIES: this
     //EFFECTS: Checks to see if the number can be assigned, assigns if true, or does nothing.
-    public boolean getAssignment(int[][] board, int r, int c) throws NumberBoundsException, InvalidBoardException {
+    private boolean getAssignment(int[][] board, int r, int c) throws NumberBoundsException, InvalidBoardException {
         for (int num = 1; num <= BOARD_SIZE; num++) {
             if (canAddNum(board, r, c, num)) {
                 //NOTE: If number can be assigned, assign number to position
@@ -84,8 +80,8 @@ public class SudokuSolver9By9 {
     }
 
     //EFFECTS: Gets solved sudoku board
-    public int[][] getSolvedBoard() {
-        return this.solvedBoard;
+    public int[][] getBoard() {
+        return this.sudokuBoard;
     }
 
     //EFFECTS: Returns true if inSameRow(), inSameColumn and inSameSubGrid all return false

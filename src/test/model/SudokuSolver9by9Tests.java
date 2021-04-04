@@ -174,13 +174,13 @@ public class SudokuSolver9by9Tests {
     @Test
     public void testInSameColumnExceptionThrown() {
         try {
-            testBoard1.inSameRow(board1, testColumnBoard1, 11);
+            testBoard1.inSameColumn(board1, testColumnBoard1, 11);
             fail("Exception should be thrown");
         } catch (Exception e) {
             //pass
         }
         try {
-            testBoard1.inSameRow(board1, testColumnBoard2, -21);
+            testBoard1.inSameColumn(board1, testColumnBoard2, -21);
             fail("Exception should be thrown");
         } catch (Exception e) {
             //pass
@@ -210,13 +210,13 @@ public class SudokuSolver9by9Tests {
     @Test
     public void testInSameSubGridExceptionThrown() {
         try {
-            testBoard1.inSameRow(board1, testSubGridColumnBoard1, 11);
+            testBoard1.inSameSubGrid(board1, testSubGridColumnBoard1, testSubGridColumnBoard1, 11);
             fail("Exception should be thrown");
         } catch (Exception e) {
             //pass
         }
         try {
-            testBoard1.inSameRow(board1, testSubGridColumnBoard2, -21);
+            testBoard1.inSameSubGrid(board1, testSubGridColumnBoard2, testSubGridColumnBoard2, -21);
             fail("Exception should be thrown");
         } catch (Exception e) {
             //pass
@@ -230,18 +230,6 @@ public class SudokuSolver9by9Tests {
             assertFalse(testBoard2.canAddNum(board2, 7, 1, 6));
         } catch (Exception e) {
             fail("Exception should not be thrown");
-        }
-        try {
-            testBoard1.canAddNum(board1, 0, 0, 100);
-            fail("Exception should be thrown");
-        } catch (Exception e) {
-            //pass
-        }
-        try {
-            testBoard2.canAddNum(board2, 7, 1, -10);
-            fail("Exception should be thrown");
-        } catch (Exception e) {
-            //pass
         }
     }
 
@@ -284,10 +272,10 @@ public class SudokuSolver9by9Tests {
     }
 
     @Test
-    public void testGetSolvedBoard() {
+    public void testGetBoard() {
         try {
             testBoardSolvable.solveBoard(board4);
-            int[][] answerBoard = testBoardSolvable.getSolvedBoard();
+            int[][] answerBoard = testBoardSolvable.getBoard();
             for (int row = 0; row < BOARD_SIZE; row++) {
                 for (int column = 0; column < BOARD_SIZE; column++) {
                     assertEquals(solution[row][column], answerBoard[row][column]);

@@ -1,6 +1,6 @@
 package gui;
 
-import exceptions.InvalidBoardException;
+import exceptions.SolverException;
 import model.SudokuAnswerBoard;
 import model.SudokuAnswerBoards;
 import model.SudokuSolver9By9;
@@ -125,7 +125,7 @@ public class SudokuSolverGUI extends JFrame {
                 setZeroToEmptyString();
                 showMessage("Unfortunately, a solution doesn't exist :(");
             }
-        } catch (InvalidBoardException e) {
+        } catch (SolverException e) {
             setZeroToEmptyString();
             showMessage("Invalid Sudoku Board!");
         }
@@ -148,7 +148,7 @@ public class SudokuSolverGUI extends JFrame {
     //         or not.
     private void sudokuAnswerBoardToGUI(SudokuSolver9By9 solve9By9) {
         boolean shouldAdd = false;
-        answerSudokuBoard = solve9By9.getSolvedBoard();
+        answerSudokuBoard = solve9By9.getBoard();
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
                 TEXT_FIELDS[rowIndex][columnIndex].setText(String.valueOf(answerSudokuBoard[rowIndex][columnIndex]));
