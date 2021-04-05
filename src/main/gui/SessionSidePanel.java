@@ -13,8 +13,8 @@ public class SessionSidePanel extends JPanel {
 
     private SudokuSolverGUI mainFrame;
     private JPanel sessionSidePanel;
-    protected CurrentSessionDisplayPanel currentSessionDisplayPanel;
-    protected SavedBoardsDisplayPanel savedBoardsDisplayPanel;
+    protected CurrentSessionPanel currentSessionPanel;
+    protected SavedBoardsPanel savedBoardsPanel;
 
     //REQUIRES: mainFrame
     //MODIFIES: this
@@ -26,11 +26,11 @@ public class SessionSidePanel extends JPanel {
         setBackground(Color.DARK_GRAY);
         setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
-        currentSessionDisplayPanel = new CurrentSessionDisplayPanel(mainFrame, sessionSidePanel);
+        currentSessionPanel = new CurrentSessionPanel(mainFrame, sessionSidePanel);
 
-        savedBoardsDisplayPanel = new SavedBoardsDisplayPanel(mainFrame, sessionSidePanel);
+        savedBoardsPanel = new SavedBoardsPanel(mainFrame, sessionSidePanel);
 
-        add(currentSessionDisplayPanel);
-        add(savedBoardsDisplayPanel);
+        add(currentSessionPanel);
+        add(savedBoardsPanel);
     }
 }

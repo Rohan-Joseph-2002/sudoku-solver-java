@@ -53,3 +53,11 @@ the SudokuAnswerBoard.
 - inSameRow(int[][] board, int rowIndex, int num) *=> on line 102*
 - inSameColumn(int[][] board, int columnIndex, int num) *=> on line 116*
 - inSameSubGrid(int[][] board, int rowIndex, int columnIndex, int num) *=> on line 130*
+
+## Phase 4: Task 3
+**Reflecting on my design, based on the UML Class Diagram**
+
+See *UML_Design_Diagram.png*
+
+I personally believe that there is no further need for me to refactor my design,
+as my design, as it is, is cohesive, and thus negates the need for refactoring.

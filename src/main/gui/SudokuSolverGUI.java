@@ -47,6 +47,7 @@ public class SudokuSolverGUI extends JFrame {
     protected final JsonReader jsonReader;
 
     private int[][] answerSudokuBoard;
+    private SudokuSolver9By9 solve9By9;
     protected SudokuAnswerBoards currentListOfAnswerBoards;
     private SudokuAnswerBoards savedListOfAnswerBoards;
     private SessionSidePanel sessionSidePanel;
@@ -116,7 +117,7 @@ public class SudokuSolverGUI extends JFrame {
     protected void solveSudokuQuestionBoard() {
         int[][] questionSudokuBoard = new int[BOARD_SIZE][BOARD_SIZE];
         getSudokuQuestionBoard(questionSudokuBoard);
-        SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+        solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
         try {
             boolean solvable = solve9By9.solveBoard(questionSudokuBoard);
             if (solvable) {

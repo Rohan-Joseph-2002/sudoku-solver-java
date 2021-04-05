@@ -22,6 +22,7 @@ public class SudokuSolverConsole {
     private Scanner scanner;
     private boolean shouldRun = true;
     private boolean shouldLoad = false;
+    private SudokuSolver9By9 solve9By9;
     private SudokuAnswerBoards listOfAnswerBoards;
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
@@ -112,7 +113,7 @@ public class SudokuSolverConsole {
     private void solveSudoku() {
         int[][] questionSudokuBoard = new int[9][9];
         getQuestionSudokuBoard(questionSudokuBoard);
-        SudokuSolver9By9 solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
+        solve9By9 = new SudokuSolver9By9(questionSudokuBoard);
         System.out.print("\n Here is your question board: \n");
         displayQuestionBoard(questionSudokuBoard);
         try {

@@ -245,13 +245,25 @@ public class SudokuSolver9by9Tests {
 
     @Test
     public void testValidSudokuBoard() {
-        assertTrue(testBoardNotSolvable.validSudokuBoard(board3));
-        assertTrue(testBoardSolvable.validSudokuBoard(board4));
+        try {
+            assertTrue(testBoardNotSolvable.validSudokuBoard(board3));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
+        try {
+            assertTrue(testBoardSolvable.validSudokuBoard(board4));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
     }
 
     @Test
     public void testValidSudokuBoardNotValid() {
-        assertFalse(testExceptionBoard.validSudokuBoard(board5));
+        try {
+            assertFalse(testExceptionBoard.validSudokuBoard(board5));
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
     }
 
     @Test

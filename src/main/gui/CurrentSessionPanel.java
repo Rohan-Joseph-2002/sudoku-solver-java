@@ -2,23 +2,19 @@ package gui;
 
 import model.SudokuAnswerBoard;
 import model.SudokuAnswerBoards;
-import persistence.JsonReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static gui.SessionSidePanel.DISPLAY_PANEL_HEIGHT;
 import static gui.SessionSidePanel.DISPLAY_PANEL_WIDTH;
 
-//Class - SavedBoardsDisplayPanel
-public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
-
+//Class - CurrentSessionDisplayPanel
+public class CurrentSessionPanel extends JPanel implements ActionListener {
     private static final String FONT_NAME = "Helvetica";
-    private static final String JSON_STORAGE = "./data/answers.json";
 
     private static final Color BUTTON_BG_COLOR = Color.LIGHT_GRAY;
     private static final Color BUTTON_FG_COLOR = Color.BLACK;
@@ -26,56 +22,53 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
     private static final Font BUTTON_FONT = new Font(FONT_NAME, Font.BOLD, 30);
     private static final Font LABEL_FONT = new Font(FONT_NAME, Font.BOLD, 40);
 
-    private final SudokuSolverGUI mainFrame;
-    private final JPanel sidePanel;
-    private final JPanel savedBoardsPane;
-    private SudokuAnswerBoards savedListOfAnswerBoards;
+    private SudokuSolverGUI mainFrame;
+    private JPanel sidePanel;
+    private JPanel currentSessionPane;
+    private SudokuAnswerBoards currentListOfAnswerBoards;
     private final ArrayList<JButton> listOfButtons;
-    private final JsonReader jsonReader;
 
     //REQUIRES: mainFrame
     //MODIFIES: this
-    //EFFECTS: Displays all saved boards in a panel
-    public SavedBoardsDisplayPanel(SudokuSolverGUI mainFrame, JPanel sidePanel) {
+    //EFFECTS: Displays all current session boards in a panel
+    public CurrentSessionPanel(SudokuSolverGUI mainFrame, JPanel sidePanel) {
         this.mainFrame = mainFrame;
         this.sidePanel = sidePanel;
-        this.savedListOfAnswerBoards = new SudokuAnswerBoards("Sudoku Solver Answers - GUI");
+        this.currentListOfAnswerBoards = mainFrame.currentListOfAnswerBoards;
         this.listOfButtons = new ArrayList<>();
-        this.jsonReader = new JsonReader(JSON_STORAGE);
 
         setBackground(Color.DARK_GRAY);
         setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT));
 
-        savedBoardsPane = new JPanel();
+        currentSessionPane = new JPanel();
 
-        displaySavedBoards();
+        displayCurrentSession();
 
-        JScrollPane savedBoardsScrollPane = new JScrollPane(savedBoardsPane,
+        JScrollPane currentSessionScrollPane = new JScrollPane(currentSessionPane,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        savedBoardsScrollPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT - 75));
+        currentSessionScrollPane.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, DISPLAY_PANEL_HEIGHT - 75));
 
-        add(savedBoardsScrollPane);
+        add(currentSessionScrollPane);
     }
 
     //MODIFIES: this
     //EFFECTS: Displays title
-    public void displaySavedBoards() {
-        JLabel title = new JLabel("- - - Saved Boards - - -");
+    public void displayCurrentSession() {
+        JLabel title = new JLabel("- - - Current Session - - -");
         title.setFont(LABEL_FONT);
         title.setForeground(Color.WHITE);
         add(title);
-        displaySavedBoard();
+        displayCurrentBoard();
     }
 
     //MODIFIES: this
-    //EFFECTS: Displays all saved boards - from file - with clickable buttons that, on click,
-    //         displays the saved board.
-    private void displaySavedBoard() {
+    //EFFECTS: Displays all current boards with clickable buttons that, on click,
+    //         displays the board.
+    private void displayCurrentBoard() {
         JPanel viewPanel = new JPanel();
         try {
-            savedListOfAnswerBoards = jsonReader.read();
-            for (SudokuAnswerBoard board : savedListOfAnswerBoards.getListOfAnswerBoards()) {
+            for (SudokuAnswerBoard board : currentListOfAnswerBoards.getListOfAnswerBoards()) {
                 String text = board.getName();
                 String command = text;
                 JButton button = createJButton(text, command);
@@ -86,13 +79,9 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
                 button.setPreferredSize(new Dimension(DISPLAY_PANEL_WIDTH, 75));
                 viewPanel.add(button);
             }
-            savedBoardsPane.add(viewPanel);
-        } catch (IOException e) {
-            JLabel unableLoad = new JLabel("Unable to load file from destination.");
-            unableLoad.setFont(LABEL_FONT);
-            JOptionPane.showMessageDialog(mainFrame, unableLoad);
+            currentSessionPane.add(viewPanel);
         } catch (NullPointerException e) {
-            savedBoardsPane.add(viewPanel);
+            currentSessionPane.add(viewPanel);
         }
     }
 
@@ -110,15 +99,16 @@ public class SavedBoardsDisplayPanel extends JPanel implements ActionListener {
     }
 
     //MODIFIES: this
-    //EFFECTS: Processes the action command of buttons in this panel
+    //EFFECTS: Processes the action command of buttons in this side panel
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         for (JButton button : listOfButtons) {
             String boardName = button.getText();
             if (command.equals(boardName)) {
-                mainFrame.displaySudokuAnswerBoard(boardName, savedListOfAnswerBoards);
+                mainFrame.displaySudokuAnswerBoard(boardName, currentListOfAnswerBoards);
             }
         }
     }
+
 }
