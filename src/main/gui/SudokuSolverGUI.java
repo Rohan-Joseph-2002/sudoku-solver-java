@@ -328,7 +328,6 @@ public class SudokuSolverGUI extends JFrame {
             JLabel load = new JLabel("Loaded " + savedListOfAnswerBoards.getName() + " from " + JSON_STORAGE);
             load.setFont(LABEL_FONT);
             JOptionPane.showMessageDialog(frame, load);
-            //shouldLoad = true;
         } catch (IOException e) {
             showMessage("Unable to load file from destination.");
         }

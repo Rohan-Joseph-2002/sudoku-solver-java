@@ -82,6 +82,19 @@ public class SudokuSolver9by9Tests {
             {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
 
+    private SudokuSolver9By9 testDuplicationBoard;
+    private final int[][] board6 = {
+            {5, 3, 0, 0, 7, 0, 0, 5, 0},
+            {6, 5, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {5, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+    };
+
     private final int[][] solution = {
             {5, 3, 4, 6, 7, 8, 9, 1, 2},
             {6, 7, 2, 1, 9, 5, 3, 4, 8},
@@ -113,6 +126,8 @@ public class SudokuSolver9by9Tests {
         testBoardSolvable = new SudokuSolver9By9(board4);
 
         testExceptionBoard = new SudokuSolver9By9(board5);
+
+        testDuplicationBoard = new SudokuSolver9By9(board6);
     }
 
     @Test

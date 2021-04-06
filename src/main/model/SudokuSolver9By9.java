@@ -100,12 +100,7 @@ public class SudokuSolver9By9 {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
         } else {
-            for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
-                if (board[rowIndex][columnIndex] == num) {
-                    return true;
-                }
-            }
-            return false;
+            return inRow(board, rowIndex, num);
         }
     }
 
@@ -115,12 +110,7 @@ public class SudokuSolver9By9 {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
         } else {
-            for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-                if (board[rowIndex][columnIndex] == num) {
-                    return true;
-                }
-            }
-            return false;
+            return inColumn(board, columnIndex, num);
         }
     }
 
@@ -130,15 +120,40 @@ public class SudokuSolver9By9 {
         if (num < 1 || num > 9) {
             throw new NumberBoundsException();
         } else {
-            for (int subRowIndex = 0; subRowIndex < 3; subRowIndex++) {
-                for (int subColumnIndex = 0; subColumnIndex < 3; subColumnIndex++) {
-                    if (board[subRowIndex + rowIndex][subColumnIndex + columnIndex] == num) {
-                        return true;
-                    }
+            return inSubGrid(board, rowIndex, columnIndex, num);
+        }
+    }
+
+    //EFFECTS: Returns true if a possible number is in the same row, else returns false
+    private boolean inRow(int[][] board, int rowIndex, int num) {
+        for (int columnIndex = 0; columnIndex < BOARD_SIZE; columnIndex++) {
+            if (board[rowIndex][columnIndex] == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //EFFECTS: Returns true if a possible number is in the same column, else returns false
+    private boolean inColumn(int[][] board, int columnIndex, int num) {
+        for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+            if (board[rowIndex][columnIndex] == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //EFFECTS: Returns true if a possible number is in the same subgrid, else returns false
+    private boolean inSubGrid(int[][] board, int rowIndex, int columnIndex, int num) {
+        for (int subRowIndex = 0; subRowIndex < 3; subRowIndex++) {
+            for (int subColumnIndex = 0; subColumnIndex < 3; subColumnIndex++) {
+                if (board[subRowIndex + rowIndex][subColumnIndex + columnIndex] == num) {
+                    return true;
                 }
             }
-            return false;
         }
+        return false;
     }
 
 }
