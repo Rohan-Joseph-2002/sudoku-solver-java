@@ -8,6 +8,6 @@ important to note that the current iteration of my application will be limited t
 
 This application can be used by anyone with an interest in sudoku but needs help
 in solving a sudoku board. This application serves to check whether a solvable, 
-as well as outputting the solved board for the user.  
+as well as displaying the solved board for the user.  
 
 *Cheers, Rohan Joseph*
