@@ -1,4 +1,4 @@
-# Sudoku Solver
+# Sudoku Solver 
 
 My Sudoku Solver will be able to take user sudoku board inputs, check if it solvable and then solve 
 sudoku board, displaying the solved board as a result, using a recursive backtracking algorithm. If the sudoku board is 
