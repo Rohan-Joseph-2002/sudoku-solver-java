@@ -1,13 +1,14 @@
-# Sudoku Solver 
+# Sudoku Solver - Java
 
-My Sudoku Solver will be able to take user sudoku board inputs, check if it solvable and then solve 
-sudoku board, displaying the solved board as a result, using a recursive backtracking algorithm. If the sudoku board is 
-not solvable, the application will print out a statement detailing this. It is
-important to note that the current iteration of my application will be limited to
-9 x 9 sudoku boards.
+Hi, and Welcome to my Graphical User Interface Sudoku Solver!
 
-This application can be used by anyone with an interest in sudoku but needs help
-in solving a sudoku board. This application serves to check whether a solvable, 
-as well as displaying the solved board for the user.  
+My Sudoku Solver will be able to take in any sudoku board input, check if it is solvable, solve the
+given board and display the solved board. If the given board is not solvable, then the application
+will display a message indicating this. It is important to note that this current iteration of my
+application is limited to only 9 by 9 sudoku boards.
 
-*Cheers, Rohan Joseph*
+I hope you all find this application useful!
+
+*Cheers,*
+
+*Rohan Joseph*
